@@ -91,7 +91,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+                        auth.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll().requestMatchers(new AntPathRequestMatcher("/api/flights/**")).permitAll().requestMatchers(new AntPathRequestMatcher("/api/bookings/**")).permitAll()
                                 .anyRequest().authenticated()
                 );
 
