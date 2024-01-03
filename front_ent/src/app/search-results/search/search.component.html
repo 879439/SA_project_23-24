@@ -1,0 +1,62 @@
+<app-loader></app-loader>
+<div class="container mt-50">
+    <div class="card">
+        <div class="card-header">
+            <h4>Search Results</h4>
+        </div>
+        <div class="card-body">
+            <!-- Your content for displaying search results goes here -->
+            <!-- Modify the structure and content based on your requirements -->
+
+            <form [formGroup]="searchFlightForm">
+                <div class="form-group row">
+                    <label for="fromDeparture" class="col-sm-3 col-form-label form-label">From: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="fromDeparture" formControlName="departureCity"
+                            placeholder="Enter Departure City" list="fromList" autocomplete="off"
+                            (keyup)="getDepartureRoutesOnPage()" (focusout)="getArrivalRoutesOnPage()">
+                        <datalist id="fromList">
+                            <span *ngFor="let departureCityName of departureRoutes">
+                                <option value="{{departureCityName?.departure_city}}">
+                                    {{departureCityName?.departure_city}}</option>
+                            </span>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="toArrival" class="col-sm-3 col-form-label form-label">To: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="toArrival" formControlName="arrivalCity"
+                            placeholder="Enter Arrival City" list="toList" autocomplete="off">
+                        <datalist id="toList">
+                            <span *ngFor="let arrivalCityName of arrivalRoutes">
+                                <option value="{{arrivalCityName?.arrival_city}}">{{arrivalCityName?.arrival_city}}
+                                </option>
+                            </span>
+                        </datalist>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="departDate" class="col-sm-3 col-form-label form-label">Departure Date: </label>
+                    <div class="input-group col-sm-3">
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp1" ngbDatepicker
+                            #d1="ngbDatepicker" id="departDate" formControlName="departDate" autocomplete="off">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button">
+                                <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- <di
+
+            <div class="flight-result" *ngFor="let result of searchResults">
+                <!-- Display relevant information about each flight result -->
+                <h5>{{ result.flightName }}</h5>
+                <p>Departure City: {{ result.departureCity }}</p>
+                <p>Arrival City: {{ result.arrivalCity }}</p>
+                <!-- Add more details as needed -->
+            </div>
+        </div>
+    </div>
+</div>
