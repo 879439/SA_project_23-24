@@ -1,11 +1,9 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "types": ["jasmine", "jasminewd2", "node"],
     "outDir": "./out-tsc/app",
-    "types": [
-      "node"
-    ]
+    
   },
   "files": [
     "src/main.ts",
@@ -16,3 +14,4 @@
     "src/**/*.d.ts"
   ]
 }
+
