@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './notification.component.html',
-  styleUrl: './notification.component.sass'
+  styleUrl: './notification.component.scss'
 })
 export class NotificationComponent {
 

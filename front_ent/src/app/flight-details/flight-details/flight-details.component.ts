@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './flight-details.component.html',
-  styleUrl: './flight-details.component.sass'
+  styleUrl: './flight-details.component.scss'
 })
 export class FlightDetailsComponent {
 

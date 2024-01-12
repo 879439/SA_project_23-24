@@ -18,7 +18,7 @@ export interface Passenger {
 @Component({
   selector: 'app-add-passenger',
   templateUrl: './add-passenger.component.html',
-  styleUrls: ['./add-passenger.component.sass']
+  styleUrls: ['./add-passenger.component.scss']
 })
 export class AddPassengerComponent implements OnInit {
   addPassengerForm!: FormGroup;

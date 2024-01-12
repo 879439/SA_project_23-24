@@ -1,0 +1,61 @@
+<div class="container mt-50">
+    <div class="card">
+        <div class="card-header">
+            <h4>Booking Summary</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Confirm Flight</h5>
+            <div class="card">
+                <div class="flight-name">
+                    <span><strong>Name: </strong>{{bookingSummary?.passenger?.fname}}
+                        &nbsp;{{bookingSummary?.passenger?.lname}}</span>
+                </div>
+                <div class="flight-name">
+                    <span><strong>Email: </strong>{{bookingSummary?.passenger?.email}}</span>
+                </div>
+                <div class="flight-name">
+                    <span><strong>Departing From: </strong></span>
+                    <span>{{ bookingSummary?.trip?.route_id?.departure_city }}</span>
+                    <span>
+                        <img alt="flight" src="../assets/flight.png" />
+                    </span>
+                    <span><strong>Arriving To: </strong></span>
+                    <span>{{ bookingSummary?.trip?.route_id?.arrival_city }}</span>
+                </div>
+                <div class="flight-name">
+                    <span><strong> At: </strong>{{ bookingSummary?.trip?.departure_time }}</span>
+                    <span class="ml-365"><strong> At: </strong>{{ bookingSummary?.trip?.arrival_time }}</span>
+                </div>
+                <div class="flight-name" *ngIf="!bookingSummary?.id">
+                    <span><strong>Date: </strong>{{bookingSummary?.trip?.date}}</span>
+                </div>
+                <div class="flight-name" *ngIf="bookingSummary?.id">
+                    <span><strong>New Date: </strong>{{bookingSummary?.changedDate}}</span>
+                </div>
+                <div class="flight-name">
+                    <span><strong>Seat Number: </strong>{{bookingSummary?.passenger?.seat_number}}</span>
+                </div>
+                <div class="flight-name">
+                    <span><strong>Food Preference: </strong>{{bookingSummary?.passenger?.food_name}}</span>
+                </div>
+                <div class="flight-name">
+                    <span><strong>Company: </strong></span>
+                    <span>{{ bookingSummary?.trip?.plane_id?.company }}</span>
+                    <button *ngIf="!bookingResponse?.id && !bookingSummary?.id" type="button" class="btn btn-primary btn-lg float-right"
+                        (click)="selectDepartingFlight()">Make Booking</button>
+                    <button *ngIf="!bookingResponse?.id && bookingSummary?.id" type="button" class="btn btn-primary btn-lg float-right"
+                        (click)="updateFlight()">Update Booking</button>
+                </div>
+
+                <div class="flight-name booked" *ngIf="bookingResponse?.id">
+                    <span><strong>Your Flight Is Booked </strong></span>
+                    <div class="flight-name response-id">
+                        <span><strong>Your Booking Reference Number: </strong>{{bookingResponse?.id}}</span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</div>

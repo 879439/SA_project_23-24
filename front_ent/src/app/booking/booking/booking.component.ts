@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.sass']
+  styleUrls: ['./booking.component.scss']
 })
 export class BookingComponent implements OnInit{
   state$!: Observable<object>;
