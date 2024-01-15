@@ -6,7 +6,9 @@ import org.example.backend.requests.CreateFlight;
 import org.example.backend.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
@@ -32,35 +34,9 @@ public class FlightController {
     }
 
     @PostMapping
-    public Flight saveFlight(@RequestBody CreateFlight flight) {
-        Flight newFlight = new Flight(flight.getCompany(), flight.getDeparture(), flight.getArrival(), flight.getDate(), flight.getTime());
-        int c=0,r=0;
-        if(flight.getSize().equals("small")){
-            c=10;
-            r=4;
-
-        }else if(flight.getSize().equals("big")){
-            c=25;
-            r=6;
-        }else{
-            c=15;
-            r=6;
-        }
-        ArrayList<Seat> seats= new ArrayList<>();
-        char a='A';
-        for(int i=0;i<c;i++){
-            for(int j=0;j<r;j++){
-                Seat s = new Seat(a+""+j,true);
-                seats.add(s);
-            }
-            int charValue = a;
-            charValue++;
-            a = (char) charValue;
-        }
-
-        newFlight.setSeats(seats);
-        newFlight.setFoods(flight.getFoods());
-        return flightService.saveFlight(newFlight);
+    public Flight saveFlight(@RequestBody CreateFlight flight) throws IOException {
+        Flight newFlight = new Flight(flight.getCompany(), flight.getDeparture(), flight.getArrival(), flight.getDate(), flight.getTime(),flight.getDiscountCode(),flight.getFoods());
+        return flightService.saveFlight(newFlight, flight.getSize());
     }
 
     @DeleteMapping("/{id}")

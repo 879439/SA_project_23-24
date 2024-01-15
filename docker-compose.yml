@@ -4,7 +4,7 @@ services:
   frontend:
     container_name: frontend
     build:
-      context: frontend
+      context: frontend_2
     ports:
       - "4200:4200"
   backend:

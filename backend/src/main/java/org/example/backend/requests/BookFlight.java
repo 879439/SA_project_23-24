@@ -3,29 +3,16 @@ package org.example.backend.requests;
 import java.util.ArrayList;
 
 public class BookFlight {
+    private ArrayList<Person> people;
     private String flightId;
-    private String firstname;
-    private String lastname;
-    private String birthday;
-    private String sex;
-    private String email;
-    private String seat;
-    private ArrayList<String> foods;
+    private String discountCode;
 
-    public String getSeat() {
-        return seat;
+    public String getDiscountCode() {
+        return discountCode;
     }
 
-    public void setSeat(String seat) {
-        this.seat = seat;
-    }
-
-    public ArrayList<String> getFoods() {
-        return foods;
-    }
-
-    public void setFoods(ArrayList<String> foods) {
-        this.foods = foods;
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
     }
 
     public String getFlightId() {
@@ -36,43 +23,11 @@ public class BookFlight {
         this.flightId = flightId;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public ArrayList<Person> getPeople() {
+        return people;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPeople(ArrayList<Person> people) {
+        this.people = people;
     }
 }

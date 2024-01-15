@@ -18,6 +18,15 @@ public class CreateFlight {
     private String time;
     private ArrayList<Food> foods;
     private String size;
+    private String discountCode;
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
+    }
 
     public String getCompany() {
         return company;

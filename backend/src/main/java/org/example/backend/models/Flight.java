@@ -22,26 +22,28 @@ public class Flight {
     private String time;
     private ArrayList<Food> foods;
     private ArrayList<Seat> seats;
-    private ArrayList<Booking> bookings;
+    private String discountCode;
 
-    public Flight(String company, String departure, String arrival, String date, String time) {
+    public Flight(String company, String departure, String arrival, String date, String time, String discountCode, ArrayList<Food> foods) {
         this.company = company;
         this.departure = departure;
         this.arrival = arrival;
         this.date = date;
         this.time = time;
+        this.discountCode = discountCode;
+        this.foods = foods;
+    }
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
     }
 
     public String getId() {
         return id;
-    }
-
-    public ArrayList<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(ArrayList<Booking> bookings) {
-        this.bookings = bookings;
     }
 
     public void setId(String id) {

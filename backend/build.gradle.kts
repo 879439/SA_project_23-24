@@ -31,6 +31,7 @@ dependencies {
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
     implementation("jakarta.validation:jakarta.validation-api:3.1.0-M1")
+    implementation("org.json:json:20211205")
 
 }
 dependencyManagement {

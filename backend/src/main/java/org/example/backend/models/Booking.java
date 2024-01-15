@@ -11,29 +11,24 @@ public class Booking {
     @Id
     private String id;
     private String flightId;
-    private String userId;
-    private String firstname;
-    private String lastname;
-    private String birthday;
-    private String sex;
-    private String email;
-    private String Seat;
-    private ArrayList<String> foods;
+    private ArrayList<Passenger> passengers;
+    private double price;
+    private String date;
 
-    public String getSeat() {
-        return Seat;
+    public Booking(String flightId){
+        this.flightId = flightId;
+        this.passengers = new ArrayList<Passenger>();
+
+
+    }
+    // Getters and setters
+
+    public String getDate() {
+        return date;
     }
 
-    public void setSeat(String seat) {
-        Seat = seat;
-    }
-
-    public ArrayList<String> getFoods() {
-        return foods;
-    }
-
-    public void setFoods(ArrayList<String> foods) {
-        this.foods = foods;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getId() {
@@ -44,6 +39,14 @@ public class Booking {
         this.id = id;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public String getFlightId() {
         return flightId;
     }
@@ -52,52 +55,12 @@ public class Booking {
         this.flightId = flightId;
     }
 
-    public String getUserId() {
-        return userId;
+    public ArrayList<Passenger> getPassengers() {
+        return passengers;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setPassengers(ArrayList<Passenger> passengers) {
+        this.passengers = passengers;
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    // Getters and setters
 }

@@ -3,6 +3,15 @@ package org.example.backend.models;
 public class Food {
     private String name;
     private int quantity;
+    private double price;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public String getName() {
         return name;
