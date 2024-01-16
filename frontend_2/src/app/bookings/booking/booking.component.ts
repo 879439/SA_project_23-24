@@ -44,9 +44,9 @@ export class BookingComponent {
 
   selectDepartingFlight() {
     let obj = {
-      'book_type':"One-Way",
-      'trip_id': this.bookingSummary['trip']['id'], 
-      'passenger_id': this.bookingSummary['passenger']['id']
+      'type':"one-way",
+      'flightId1': this.bookingSummary['Flight']['id'], 
+      'people': [this.bookingSummary['passenger']]
     }
     this.bookingResponse = undefined;
     this.bookingSerivce.makeBooking(obj).subscribe((res: any) => {

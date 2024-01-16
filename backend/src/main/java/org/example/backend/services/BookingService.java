@@ -26,7 +26,7 @@ public class BookingService {
     }
 
     public List<Booking> getBookingsForFlight(String flightId) {
-        List<Booking> bookings = bookingRepository.findByFlightId(flightId);
+        List<Booking> bookings = bookingRepository.findByFlightIds(flightId);
         return bookings != null ? bookings : Collections.emptyList();
     }
     public void cancelBooking(String bookingId) {

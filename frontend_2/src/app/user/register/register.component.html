@@ -23,7 +23,11 @@
         </div>
         <div class="form-group">
             <label for="password">Sex:</label>
-            <input type="text" id="sex" [(ngModel)]="sex" name="sex" required>
+            <label for="SexSelect" class="col-sm-3 col-form-label select-element">Sex: </label>
+                    <select class="form-control col-sm-3 w-237" id="SexSelectForm" [(ngModel)]="sex" name="sex">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
         </div>
         <div class="form-group">
             <label for="password">Birthday:</label>

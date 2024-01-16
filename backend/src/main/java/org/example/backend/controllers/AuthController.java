@@ -3,6 +3,7 @@ package org.example.backend.controllers;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,16 +65,16 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-        System.out.println(ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer "+jwt)
-                .body(new UserInfoResponse(userDetails.getId()+jwt,
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles)).getHeaders());
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer "+jwt)
-                .body(new UserInfoResponse(userDetails.getId()+jwt,
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles));
+        Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
+        if(user.isPresent()) {
+            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                    .body(new UserInfoResponse(user.get().getId(),
+                            userDetails.getUsername(),
+                            userDetails.getEmail(),
+                            roles,user.get().getFirstname(),user.get().getLastname(),user.get().getBirthday(),user.get().getSex()));
+        }else{
+            return ResponseEntity.badRequest().body("Bad credentials");
+        }
     }
 
     @GetMapping("/hello")

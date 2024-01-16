@@ -19,17 +19,20 @@ public class Flight {
     @NotBlank
     private String date;
     @NotBlank
-    private String time;
+    private String departure_time;
+    @NotBlank
+    private String arrival_time;
     private ArrayList<Food> foods;
     private ArrayList<Seat> seats;
     private String discountCode;
 
-    public Flight(String company, String departure, String arrival, String date, String time, String discountCode, ArrayList<Food> foods) {
+    public Flight(String company, String departure, String arrival, String date, String departure_time,String arrival_time, String discountCode, ArrayList<Food> foods) {
         this.company = company;
         this.departure = departure;
         this.arrival = arrival;
         this.date = date;
-        this.time = time;
+        this.departure_time = departure_time;
+        this.arrival_time = arrival_time;
         this.discountCode = discountCode;
         this.foods = foods;
     }
@@ -82,12 +85,20 @@ public class Flight {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
+    public String getDeparture_time() {
+        return departure_time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDeparture_time(String departure_time) {
+        this.departure_time = departure_time;
+    }
+
+    public String getArrival_time() {
+        return arrival_time;
+    }
+
+    public void setArrival_time(String arrival_time) {
+        this.arrival_time = arrival_time;
     }
 
     public ArrayList<Food> getFoods() {

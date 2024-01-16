@@ -32,10 +32,14 @@ public class FlightController {
     public Flight getFlightById(@PathVariable String id) {
         return flightService.getFlightById(id);
     }
+    @GetMapping("/{departure}/{arrival}")
+    public List<Flight> getFlightsByCities(@PathVariable String departure,@PathVariable String arrival){
+        return flightService.getFlightsByCities(departure,arrival);
+    }
 
     @PostMapping
     public Flight saveFlight(@RequestBody CreateFlight flight) throws IOException {
-        Flight newFlight = new Flight(flight.getCompany(), flight.getDeparture(), flight.getArrival(), flight.getDate(), flight.getTime(),flight.getDiscountCode(),flight.getFoods());
+        Flight newFlight = new Flight(flight.getCompany(), flight.getDeparture(), flight.getArrival(), flight.getDate(), flight.getDeparture_time(),flight.getArrival_time(),flight.getDiscountCode(),flight.getFoods());
         return flightService.saveFlight(newFlight, flight.getSize());
     }
 

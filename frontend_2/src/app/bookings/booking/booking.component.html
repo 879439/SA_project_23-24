@@ -7,40 +7,44 @@
             <h5 class="card-title">Confirm Flight</h5>
             <div class="card">
                 <div class="flight-name">
-                    <span><strong>Name: </strong>{{bookingSummary?.passenger?.fname}}
-                        &nbsp;{{bookingSummary?.passenger?.lname}}</span>
+                    <span><strong>Name: </strong>{{bookingSummary?.passenger?.firstname}}
+                        &nbsp;{{bookingSummary?.passenger?.lastname}}</span>
                 </div>
                 <div class="flight-name">
                     <span><strong>Email: </strong>{{bookingSummary?.passenger?.email}}</span>
                 </div>
                 <div class="flight-name">
                     <span><strong>Departing From: </strong></span>
-                    <span>{{ bookingSummary?.trip?.route_id?.departure_city }}</span>
+                    <span>{{ bookingSummary?.Flight?.departure }}</span>
                     <span>
                         <img alt="flight" src="../assets/flight.png" />
                     </span>
                     <span><strong>Arriving To: </strong></span>
-                    <span>{{ bookingSummary?.trip?.route_id?.arrival_city }}</span>
+                    <span>{{ bookingSummary?.Flight.arrival }}</span>
                 </div>
                 <div class="flight-name">
-                    <span><strong> At: </strong>{{ bookingSummary?.trip?.departure_time }}</span>
-                    <span class="ml-365"><strong> At: </strong>{{ bookingSummary?.trip?.arrival_time }}</span>
+                    <span><strong> At: </strong>{{ bookingSummary?.Flight?.departure_time }}</span>
+                    <span class="ml-365"><strong> At: </strong>{{ bookingSummary?.Flight?.arrival_time }}</span>
                 </div>
                 <div class="flight-name" *ngIf="!bookingSummary?.id">
-                    <span><strong>Date: </strong>{{bookingSummary?.trip?.date}}</span>
+                    <span><strong>Date: </strong>{{bookingSummary?.Flight?.date}}</span>
                 </div>
                 <div class="flight-name" *ngIf="bookingSummary?.id">
                     <span><strong>New Date: </strong>{{bookingSummary?.changedDate}}</span>
                 </div>
                 <div class="flight-name">
-                    <span><strong>Seat Number: </strong>{{bookingSummary?.passenger?.seat_number}}</span>
+                    <span><strong>Seat Number: </strong>{{bookingSummary?.passenger?.seat}}</span>
                 </div>
                 <div class="flight-name">
-                    <span><strong>Food Preference: </strong>{{bookingSummary?.passenger?.food_name}}</span>
+                    <span><strong>Food Preference: </strong>{{bookingSummary?.passenger?.food}}</span>
                 </div>
+                <div class="flight-name">
+                    <span><strong>Total Price: </strong>{{bookingSummary?.passenger?.price}}</span>
+                </div>
+                
                 <div class="flight-name">
                     <span><strong>Company: </strong></span>
-                    <span>{{ bookingSummary?.trip?.plane_id?.company }}</span>
+                    <span>{{ bookingSummary?.Flight?.company }}</span>
                     <button *ngIf="!bookingResponse?.id && !bookingSummary?.id" type="button" class="btn btn-primary btn-lg float-right"
                         (click)="selectDepartingFlight()">Make Booking</button>
                     <button *ngIf="!bookingResponse?.id && bookingSummary?.id" type="button" class="btn btn-primary btn-lg float-right"

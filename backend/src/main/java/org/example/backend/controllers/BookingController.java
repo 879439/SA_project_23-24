@@ -28,6 +28,7 @@ public class BookingController {
 
     @PostMapping("/flight")
     public Booking bookFlight(@RequestBody BookFlight bookFlight) {
+        System.out.println("IM HERE!!!!!");
         return flightService.bookFlight(bookFlight);
     }
     @DeleteMapping("/{bookingId}")

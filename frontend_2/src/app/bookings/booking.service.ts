@@ -6,7 +6,7 @@ import { Observable, catchError, of, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class BookingService {
-  private apiUrl = "http://localhost:8080/api/auth";
+  private apiUrl = "http://localhost:8080/api/bookings/";
   constructor(private http:HttpClient) { }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -30,7 +30,7 @@ export class BookingService {
   }
 
   makeBooking(data: any): Observable<any> {
-    return this.http.post(this.apiUrl + 'createbooking', data)
+    return this.http.post(this.apiUrl + 'flight', data)
     .pipe(tap((routes: any) => console.log('createbooking')),
         catchError(this.handleError('createbooking', [])));
   }

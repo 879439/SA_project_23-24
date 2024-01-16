@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 public class BookFlight {
     private ArrayList<Person> people;
-    private String flightId;
+    private String type;
+    private String flightId1;
+    private String flightId2;
     private String discountCode;
 
     public String getDiscountCode() {
@@ -15,13 +17,30 @@ public class BookFlight {
         this.discountCode = discountCode;
     }
 
-    public String getFlightId() {
-        return flightId;
+    public String getType() {
+        return type;
     }
 
-    public void setFlightId(String flightId) {
-        this.flightId = flightId;
+    public void setType(String type) {
+        this.type = type;
     }
+
+    public String getFlightId1() {
+        return flightId1;
+    }
+
+    public void setFlightId1(String flightId1) {
+        this.flightId1 = flightId1;
+    }
+
+    public String getFlightId2() {
+        return flightId2;
+    }
+
+    public void setFlightId2(String flightId2) {
+        this.flightId2 = flightId2;
+    }
+
 
     public ArrayList<Person> getPeople() {
         return people;

@@ -1,1 +1,18 @@
-<p>flight works!</p>
+<div class="search-container">
+    <input type="text" [(ngModel)]="departure" placeholder="Search..." name="departure">
+    <input type="text" [(ngModel)]="arrival" placeholder="Search..." name="arrival">
+    <button (click)="onSearch()">Search</button>
+  
+    <div *ngIf="searchResults.length > 0">
+      <h2>Search Results:</h2>
+      <ul>
+        <li *ngFor="let item of searchResults">
+         <a (click)="bookFlight(item.id)"> {{ item.id }} - {{ item.departure }} - {{ item.arrival }} - {{ item.date }} - {{ item.departure_time }} - {{ item.arrival_time }} </a>
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="searchResults.length === 0">
+      <p>No results found.</p>
+    </div>
+  </div>

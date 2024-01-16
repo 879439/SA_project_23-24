@@ -7,7 +7,7 @@ import { Observable, catchError, of, tap } from 'rxjs';
 })
 export class FlightService {
 
-  private apiUrl = "http://localhost:8080/api/auth";
+  private apiUrl = "http://localhost:8080/api/flights";
   constructor(private http:HttpClient) { }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -43,5 +43,11 @@ export class FlightService {
     return this.http.get<any[]>(this.apiUrl + 'getavailseats',{params: httpParams})
     .pipe(tap((routes: any) => console.log('Available seats')),
         catchError(this.handleError('getAvailableSeats', [])));
+  }
+  getFlightsByCities(departure:String,arrival:String): Observable<any[]>{
+    return this.http.get<any[]>(`${this.apiUrl}/${departure}/${arrival}`);
+  }
+  getFlightById(id:String):Observable<any>{
+    return this.http.get<any[]>(this.apiUrl+"/"+id);
   }
 }

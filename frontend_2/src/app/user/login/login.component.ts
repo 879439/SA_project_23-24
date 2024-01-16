@@ -24,6 +24,8 @@ export class LoginComponent {
         const jwt = response.headers.get('Authorization');
         if (jwt) {
           localStorage.setItem('JWT', jwt.replace('Bearer ', ''));
+          localStorage.setItem("user",JSON.stringify(response.body));
+
         }
       },
       error: (error) => {
