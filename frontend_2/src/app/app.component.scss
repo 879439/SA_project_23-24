@@ -1,29 +1,158 @@
+nav {
+  img{
+    width: 120px;
+    mix-blend-mode: multiply;
+  }
+}
+h1{
+  font-size: 40px;
+  line-height: 47px;
+  font-weight: 600;
+
+}
+.section-height{
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 50px;
+  
+}
+.primary-btn{
+  background: #fa6b6b;
+  color: white;
+  padding: 13px 45px;
+  border: none;
+  border-radius: 4px;
+
+
+}
+
 .toolbar{
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background-color: #007bff;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+}
+  img{
+    margin: 10px 16px 0 16px;
+  }
+  #twitter-logo{
+    height: 40px;
+    margin: 0 16px;
+  }
+    
+.spacer{
+  flex: 1;
+}
+.mr-15{
+  margin: 15px;
+}
+.admin-portal{
+  margin: 10px;
+  cursor: pointer;
+}
+.cursor{
+  cursor: pointer;
+}
+.hero-section{
+  display: flex;
+  background-image: url("../../src/assets/images/front_page-dw.jpg");
+  height: 265px;
+  width: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 20px 20px 100px;
+  h1{
     color: white;
-    font-weight: 600;
+    font-size: 40px;
   }
+  p{
+    color: white;
+    font-size: 20px;
+  }
+
+}
+.search-form{
+  width: 74%;
+    height: 120px;
+    box-shadow: 0px 0px 15.2px 2px #00000017;
+    padding: 38px 20px 28px 20px;
+    border-radius: 4px;
+    margin-top: -46px;
+    background: white;
+    position: absolute;
+    left: 13%;
+    .form-control{
+      height: 50px;
+      background: #f1f2f6;
+      border: none;
+      border-radius: 1px;
+    }
+    #search-btn{
+      background-color: #fa6b6b;
+      color: #fff;
+    }
+}
+.app-promo{
+  height: 600px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f2f6;
+  padding: 150px 150px 20px 75px;
+
+  img{
+    width:60%;
+  }
+  #app-button{
+    display: flex;
     img{
-      margin: 10px 16px 0 16px;
+      width: 80%;
+
     }
-    #twitter-logo{
-      height: 40px;
-      margin: 0 16px;
+  }
+}
+.travel-opt{
+ 
+  img{
+    width: 80%;
+  }
+  button{
+    margin-top: 35px;
+  }
+}
+.compare-sec{
+  background: #f1f2f6;
+  div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  p{
+    text-align: center;
+  }
+  img{
+    width: 50%;
+  }
+}
+.subscribe-sec{
+  flex-direction: column;
+  .row{
+    align-items: center;
+    justify-content: center;
+    margin-top: 90px;
+    .col-sm-5 input{
+      height: 50px;
     }
-      
-  .spacer{
-    flex: 1;
   }
-  .mr-15{
-    margin: 15px;
+  p, h1{ 
+    text-align: center;
   }
-  .admin-portal{
-    margin: 10px;
-    cursor: pointer;
-  }
-  .cursor{
-    cursor: pointer;
-  }
+}
