@@ -16,6 +16,7 @@ import java.util.List;
 public class BookingService {
     private final MongoTemplate mongoTemplate;
     private final BookingRepository bookingRepository;
+
     @Autowired
     UserRepository userRepository;
 
@@ -35,4 +36,5 @@ public class BookingService {
             bookingRepository.delete(booking);
         }
     }
+
 }

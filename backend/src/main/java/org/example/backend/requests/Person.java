@@ -2,6 +2,7 @@ package org.example.backend.requests;
 
 import org.example.backend.Annotations.ValidDate;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class Person {
     @NotNull
     private String sex;
     @NotNull
+    @Email
     private String email;
     @NotNull
     private String seat;

@@ -16,6 +16,7 @@ public class Booking {
     private String id;
     @NotNull
     private Map<String,String> flightIds= new HashMap<>();
+    private String userId;
     @NotNull
     private String type;
     @NotNull
@@ -42,6 +43,14 @@ public class Booking {
 
     }
     // Getters and setters
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getType() {
         return type;

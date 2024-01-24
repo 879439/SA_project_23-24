@@ -6,19 +6,21 @@ import org.example.backend.repositories.FlightRepository;
 import org.example.backend.repositories.UserRepository;
 import org.example.backend.requests.BookFlight;
 import org.example.backend.requests.Person;
+import org.example.backend.responses.MessageResponse;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.json.JSONArray;
 
 @Service
@@ -26,6 +28,11 @@ public class FlightService {
     private final MongoTemplate mongoTemplate;
     private final FlightRepository flightRepository;
     private final BookingRepository bookingRepository;
+    @Autowired
+    private PdfService pdfService;
+
+    @Autowired
+    private EmailService emailService;
     @Autowired
     UserRepository userRepository;
 
@@ -111,10 +118,22 @@ public class FlightService {
     public void deleteFlight(String id) {
         flightRepository.deleteById(id);
     }
-    public Booking bookFlightAux(Booking newBooking,String flightId,String discountCode, ArrayList<Person> people){
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+    public Booking bookFlightAux(Booking newBooking,String flightId,String discountCode, ArrayList<Person> people, TicketInfo ticketInfo){
+        AtomicReference<String> name = new AtomicReference<>(SecurityContextHolder.getContext().getAuthentication().getName());
         Flight flight = flightRepository.findById(flightId).orElse(null);
+        Optional<User> u = userRepository.findByUsername(name.get());
+        u.ifPresent(user->{
+            name.set(user.getId());
+        });
+        newBooking.setUserId(name.get());
         boolean flag=false;
+        if (flight==null){
+            return null;
+        }
+        ticketInfo.getArrivals().add(flight.getArrival());
+        ticketInfo.getDepartures().add(flight.getDeparture());
+        ticketInfo.getDates().add(flight.getDate());
+        ticketInfo.getTimes().add(flight.getDeparture_time());
         for(Person p: people) {
             for (Seat seat1 : flight.getSeats()) {
 
@@ -149,53 +168,55 @@ public class FlightService {
         if(newBooking.getFlightIds().get("one-way").equals(flightId)) {
             for (Person p : people) {
                 Passenger p1 = new Passenger();
-                if ("anonymousUser".equals(name)) {
-                    p1.setFirstname(p.getFirstname());
-                    p1.setLastname(p.getLastname());
-                    p1.setEmail(p.getEmail());
-                    p1.setSex(p.getSex());
-                    p1.setBirthday(p.getBirthday());
-                    p1.setFoods(p.getFoods());
-                    p1.setSeat(p.getSeat());
-
-
-                } else {
-                    Optional<User> u = userRepository.findByUsername(name);
-                    u.ifPresent(user -> {
-                        p1.setUserId(user.getId());
-                        p1.setBirthday(user.getBirthday());
-                        p1.setEmail(user.getEmail());
-                        p1.setFirstname(user.getFirstname());
-                        p1.setLastname(user.getLastname());
-                        p1.setSex(user.getSex());
-
-                    });
-                    p1.setFoods(p.getFoods());
-                    p1.setSeat(p.getSeat());
-                }
+                p1.setFirstname(p.getFirstname());
+                p1.setLastname(p.getLastname());
+                p1.setEmail(p.getEmail());
+                p1.setSex(p.getSex());
+                p1.setBirthday(p.getBirthday());
+                p1.setFoods(p.getFoods());
+                p1.setSeat(p.getSeat());
+                p1.setFoods(p.getFoods());
+                p1.setSeat(p.getSeat());
                 newBooking.getPassengers().add(p1);
+
+
             }
         }
         if(newBooking.getFlightIds().get("round-trip")==null || newBooking.getFlightIds().get("round-trip").equals(flightId)) {
-            newBooking.setDate(LocalDate.now().getYear() + "/" + LocalDate.now().getMonthValue() + "/" + LocalDate.now().getDayOfMonth());
+            newBooking.setDate(LocalDate.now().getYear() + "-" + LocalDate.now().getMonthValue() + "-" + LocalDate.now().getDayOfMonth());
             if ( discountCode!=null && discountCode.equals(flight.getDiscountCode())) {
                 newBooking.setPrice((float) (newBooking.getPrice() - 0.1 * newBooking.getPrice()));
             }
         }
         System.out.println("Ho finito"+ newBooking.getPrice());
-        bookingRepository.save(newBooking);
+        newBooking=bookingRepository.save(newBooking);
+        ticketInfo.setPassengers(newBooking.getPassengers());
+        ticketInfo.setBookingId(newBooking.getId());
+        ticketInfo.setPrice(newBooking.getPrice());
         return newBooking;
     }
     public Booking bookFlight(BookFlight booking) {
+        Booking newBooking = new Booking(booking.getFlightId1(), booking.getType());
+        TicketInfo ticketInfo = new TicketInfo(booking.getType());
         if(booking.getType().equals("one-way")){
-            Booking newBooking = new Booking(booking.getFlightId1(), booking.getType());
-            return bookFlightAux(newBooking,booking.getFlightId1(), booking.getDiscountCode(), booking.getPeople());
+            return bookFlightAux(newBooking,booking.getFlightId1(), booking.getDiscountCode(), booking.getPeople(), ticketInfo);
         }else{
-            Booking newBooking = new Booking(booking.getFlightId1(),booking.getFlightId2(), booking.getType());
-            newBooking = bookFlightAux(newBooking,booking.getFlightId1(), booking.getDiscountCode(), booking.getPeople());
-            return bookFlightAux(newBooking,booking.getFlightId2(), booking.getDiscountCode(), booking.getPeople());
+            Map<String,String > flightIds = newBooking.getFlightIds();
+            flightIds.put("round-trip", booking.getFlightId2());
+            newBooking.setFlightIds(flightIds);
+            newBooking = bookFlightAux(newBooking,booking.getFlightId1(), booking.getDiscountCode(), booking.getPeople(),ticketInfo);
+            if(newBooking==null){
+                return null;
+            }
+            newBooking = bookFlightAux(newBooking,booking.getFlightId2(), booking.getDiscountCode(), booking.getPeople(),ticketInfo);
+            createAndSendTicket(ticketInfo);
+            return newBooking;
         }
 
+    }
+    public void createAndSendTicket(TicketInfo ticketInfo) {
+        byte[] pdfBytes = pdfService.generateTicketPdf(ticketInfo);
+        emailService.sendTicketEmail(ticketInfo.getPassengers(), "Your Ticket id:"+ticketInfo.getBookingId(), "Here is your ticket", pdfBytes);
     }
 
     public List<Flight> findFlights(String departure, String arrival, String date){

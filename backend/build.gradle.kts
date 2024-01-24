@@ -28,7 +28,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.json:json:20211205")
+    implementation("com.itextpdf:itext7-core:7.1.9")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.json:json:20231013")
+    implementation("com.google.zxing:core:3.4.1")
+    implementation("com.google.zxing:javase:3.4.1")
 
 
 }
