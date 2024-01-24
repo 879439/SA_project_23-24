@@ -1,8 +1,10 @@
 package org.example.backend.models;
 
+import org.example.backend.Annotations.ValidDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,10 +14,16 @@ public class Booking {
 
     @Id
     private String id;
+    @NotNull
     private Map<String,String> flightIds= new HashMap<>();
+    @NotNull
     private String type;
+    @NotNull
     private ArrayList<Passenger> passengers;
+    @NotNull
     private double price;
+    @NotNull
+    @ValidDate
     private String date;
 
     public Booking(String flightId1, String flightId2, String type){

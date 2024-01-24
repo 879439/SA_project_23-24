@@ -1,12 +1,16 @@
 package org.example.backend.requests;
 
-import jakarta.validation.constraints.NotBlank;
+import javax.validation.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class LoginRequest {
-    @NotBlank
+    @NotNull(message = "username cannot be null!")
+    @Size(min=1)
     private String username;
 
-    @NotBlank
+    @NotNull
+    @Size(min=1)
     private String password;
 
     public String getUsername() {

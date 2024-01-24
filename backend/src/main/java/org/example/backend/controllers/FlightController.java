@@ -1,14 +1,20 @@
 package org.example.backend.controllers;
 
+import org.example.backend.Annotations.ValidDate;
 import org.example.backend.models.Flight;
 import org.example.backend.models.Seat;
 import org.example.backend.requests.CreateFlight;
 import org.example.backend.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 
+import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
@@ -37,8 +43,17 @@ public class FlightController {
         return flightService.getFlightsByCities(departure,arrival);
     }
 
-    @PostMapping
-    public Flight saveFlight(@RequestBody CreateFlight flight) throws IOException {
+    @GetMapping("/")
+    public ResponseEntity<List<Flight>> getFlights(
+            @RequestParam String departure,
+            @RequestParam String arrival,
+            @RequestParam @ValidDate String date) {
+        List<Flight> flights = flightService.findFlights(departure, arrival, date);
+        return new ResponseEntity<>(flights, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public Flight saveFlight(@Valid @RequestBody CreateFlight flight) throws IOException {
         Flight newFlight = new Flight(flight.getCompany(), flight.getDeparture(), flight.getArrival(), flight.getDate(), flight.getDeparture_time(),flight.getArrival_time(),flight.getDiscountCode(),flight.getFoods());
         return flightService.saveFlight(newFlight, flight.getSize());
     }

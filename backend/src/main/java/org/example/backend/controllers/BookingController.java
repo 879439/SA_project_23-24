@@ -6,6 +6,7 @@ import org.example.backend.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -27,7 +28,7 @@ public class BookingController {
     }
 
     @PostMapping("/flight")
-    public Booking bookFlight(@RequestBody BookFlight bookFlight) {
+    public Booking bookFlight(@Valid @RequestBody BookFlight bookFlight) {
         System.out.println("IM HERE!!!!!");
         return flightService.bookFlight(bookFlight);
     }

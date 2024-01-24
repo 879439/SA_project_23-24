@@ -198,5 +198,9 @@ public class FlightService {
 
     }
 
+    public List<Flight> findFlights(String departure, String arrival, String date){
+        return flightRepository.findByCitiesAndDate(departure,arrival,date);
+    }
+
 
 }

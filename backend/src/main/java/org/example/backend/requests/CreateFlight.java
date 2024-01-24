@@ -1,6 +1,9 @@
 package org.example.backend.requests;
 
-import jakarta.validation.constraints.NotBlank;
+
+import javax.validation.constraints.NotBlank;
+
+import org.example.backend.Annotations.ValidDate;
 import org.example.backend.models.Food;
 
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ public class CreateFlight {
     @NotBlank
     private String arrival;
     @NotBlank
+    @ValidDate
     private String date;
     @NotBlank
     private String departure_time;

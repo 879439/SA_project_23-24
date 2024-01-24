@@ -1,6 +1,5 @@
 package org.example.backend.responses;
 
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 

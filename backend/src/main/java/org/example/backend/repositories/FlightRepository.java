@@ -11,4 +11,6 @@ public interface FlightRepository extends MongoRepository<Flight, String> {
     // Custom queries if needed
     @Query("{$and:[{departure: ?0},{arrival:?1}]}")
     List<Flight> findByCities(String departure, String arrival);
+    @Query("{$and:[{departure: ?0},{arrival:?1},{date: ?2}]}")
+    List<Flight> findByCitiesAndDate(String departure, String arrival,String Date);
 }

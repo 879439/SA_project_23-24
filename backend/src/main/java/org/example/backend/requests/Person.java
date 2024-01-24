@@ -1,13 +1,23 @@
 package org.example.backend.requests;
 
+import org.example.backend.Annotations.ValidDate;
+
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 public class Person {
+    @NotNull
     private String firstname;
+    @NotNull
     private String lastname;
+    @NotNull
+    @ValidDate
     private String birthday;
+    @NotNull
     private String sex;
+    @NotNull
     private String email;
+    @NotNull
     private String seat;
     private ArrayList<String> foods;
 

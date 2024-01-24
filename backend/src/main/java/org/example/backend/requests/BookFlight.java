@@ -1,10 +1,17 @@
 package org.example.backend.requests;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 
 public class BookFlight {
+    @NotNull
     private ArrayList<Person> people;
+    @NotNull
     private String type;
+    @NotNull
     private String flightId1;
     private String flightId2;
     private String discountCode;

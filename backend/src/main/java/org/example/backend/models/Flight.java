@@ -1,8 +1,9 @@
 package org.example.backend.models;
-import jakarta.validation.constraints.NotBlank;
+import org.example.backend.Annotations.ValidDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 
 @Document(collection = "flights")
@@ -17,6 +18,7 @@ public class Flight {
     @NotBlank
     private String arrival;
     @NotBlank
+    @ValidDate
     private String date;
     @NotBlank
     private String departure_time;
