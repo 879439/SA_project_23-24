@@ -43,13 +43,27 @@ public class FlightController {
         return flightService.getFlightsByCities(departure,arrival);
     }
 
-    @GetMapping("/")
+    @GetMapping("/one-way")
     public ResponseEntity<List<Flight>> getFlights(
             @RequestParam String departure,
             @RequestParam String arrival,
             @RequestParam @ValidDate String date) {
         List<Flight> flights = flightService.findFlights(departure, arrival, date);
         return new ResponseEntity<>(flights, HttpStatus.OK);
+    }
+    @GetMapping("/round-trip")
+    public ResponseEntity<List<Flight>> getFlights(
+            @RequestParam String departure,
+            @RequestParam String arrival,
+            @RequestParam @ValidDate String date,
+            @RequestParam @ValidDate String returnDate) {
+        List<Flight> flights = flightService.findFlights(departure, arrival, date, returnDate);
+        if(flights.size()>=2){
+            return new ResponseEntity<>(flights, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
     }
 
     @PutMapping

@@ -31,20 +31,20 @@ public class PdfService {
             PdfWriter writer = new PdfWriter(byteArrayOutputStream);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
-            document.add(new Paragraph("Ticket for: "+ticketInfo.getPassengers().get(0).getFirstname()));
+            document.add(new Paragraph("Booking N: "+ticketInfo.getBookingId()).setFontSize(28).setBold());
             byte[] b = generateQRCode(ticketInfo.getBookingId(), 300,300);
             ImageData img= ImageDataFactory.create(b);
             document.add(new Image(img));
-            document.add(new Paragraph("Flight Details: "+ticketInfo.getPassengers().size()+"\n"+"Type: "+ticketInfo.getType()));
+            document.add(new Paragraph("Flight Details:"+"\n"+"Type: "+ticketInfo.getType()).setFontSize(26).setBold());
             document.add(new Paragraph("Departure: "+ticketInfo.getDepartures().get(0)+"    Arrival: "+ticketInfo.getDepartures().get(0)+"      Date: "+ticketInfo.getDates().get(0)+" "+ticketInfo.getTimes().get(0)+"\n"));
             if(ticketInfo.getType().equals("round-trip")){
                 document.add(new Paragraph("Departure: "+ticketInfo.getDepartures().get(1)+"    Arrival: "+ticketInfo.getDepartures().get(1)+"      Date: "+ticketInfo.getDates().get(1)+" "+ticketInfo.getTimes().get(1)+"\n"));
             }
-            document.add(new Paragraph("Number of Passengers: "+ticketInfo.getPassengers().size()+"\n"));
+            document.add(new Paragraph("Number of Passengers: "+ticketInfo.getPassengers().size()+"\n").setFontSize(26).setBold());
             for(Passenger p: ticketInfo.getPassengers()){
                 document.add(new Paragraph("Name: "+p.getFirstname()+"\nSurname: "+p.getLastname()+"\nBirthdate: "+p.getBirthday()+"\nSeat: "+p.getSeat()));
             }
-            document.add(new Paragraph("Total price: "+ticketInfo.getPrice()));
+            document.add(new Paragraph("Total price: "+String.format("%.2f",ticketInfo.getPrice())).setFontSize(26).setBold());
 
 
             document.close();
