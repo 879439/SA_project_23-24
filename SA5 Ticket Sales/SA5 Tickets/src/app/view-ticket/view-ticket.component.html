@@ -35,19 +35,19 @@
         <div class="row">
           <div class="col-md-3">
             <strong>Flight Code:</strong>
-             {{ selectedFlight.id }}
+             {{ selectedFlight.flight1.id }}
           </div>
           <div class="col-md-3">
             <strong>Origin:</strong>
-            {{ selectedFlight.departure }}
+            {{ selectedFlight.flight1.departure }}
           </div>
           <div class="col-md-3">
             <strong>Destination:</strong>
-            {{ selectedFlight.arrival }}
+            {{ selectedFlight.flight1.arrival }}
           </div>
           <div class="col-md-3">
             <strong>Date:</strong>
-            {{ selectedFlight.date }}
+            {{ selectedFlight.flight1.date }}
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@
         <div class="row">
           <div class="col-md-6">
             <strong>Base Fare:</strong>
-            {{ getPriceFormatted(selectedFlight.price) }}
+            {{ getPriceFormatted(selectedFlight.flight1.price) }}
           </div>
           <!-- Add more fare breakdown details here if needed -->
         </div>

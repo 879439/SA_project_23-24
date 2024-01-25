@@ -4,11 +4,11 @@
     <div class="col-md-6">
       <div class="flight-box card mb-3">
         <div class="card-body">
-          <h5 class="card-title">Selected Flight: Flight {{ selectedFlight?.id }}</h5>
-          <p class="card-text">Origin: {{ selectedFlight?.departure }}</p>
-          <p class="card-text">Destination: {{ selectedFlight?.arrival }}</p>
-          <p class="card-text">Date: {{ selectedFlight?.date }}</p>
-          <p class="card-text">Price: {{ selectedFlight?.price | currency }}</p>
+          <h5 class="card-title">Selected Flight: Flight {{ selectedFlight.flight1.id }}</h5>
+          <p class="card-text">Origin: {{ selectedFlight.flight1.departure }}</p>
+          <p class="card-text">Destination: {{ selectedFlight.flight1.arrival }}</p>
+          <p class="card-text">Date: {{ selectedFlight.flight1.date }}</p>
+          <p class="card-text">Price: {{ selectedFlight.flight1.price| currency }}</p>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
             <div class="form-group">
               <label for="seatSelection">Seat Selection:</label>
               <select class="form-control" id="seatSelection" name="seatSelection" [(ngModel)]="seatSelection" required>
-                      <option *ngFor="let seat of selectedFlight?.flight1.seats" [value]="seat.name">{{seat.name}}</option>
+                      <option *ngFor="let seat of selectedFlight.flight1.seats" [value]="seat.name">{{seat.name}}</option>
                   
               </select>
             </div>
@@ -53,7 +53,7 @@
               <label for="seatSelection">Food Selection:</label>
               <select class="form-control" id="seatSelection" name="foodSelection" [(ngModel)]="foodSelection" required>
                
-                      <option *ngFor="let food of selectedFlight?.flight1.foods" [value]="food.name">{{food.name}}</option>
+                      <option *ngFor="let food of selectedFlight.flight1.foods" [value]="food.name">{{food.name}}</option>
                   
               </select>
             </div>

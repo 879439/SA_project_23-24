@@ -1,3 +1,8 @@
+export class Flights {
+  flight1!: Flight;
+  flight2!: Flight;
+  
+}
 export interface Flight {
     id: number;
     comapany:string;
@@ -12,6 +17,7 @@ export interface Flight {
     discountCode:string;
     price: number;
   }
+ 
   export interface Seat{
     name:string;
     isAvailable:boolean;

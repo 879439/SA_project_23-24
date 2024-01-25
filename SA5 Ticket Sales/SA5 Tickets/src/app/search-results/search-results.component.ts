@@ -21,6 +21,7 @@ export class SearchResultsComponent implements OnInit {
       const { tripType, from, to, departureDate, numAdults, numChildren, travelClass , returnDate} = params;
       this.tripType = tripType;
       if(tripType==="one-way"){
+        console.log("HEREEEE")
       // Call the service to get mock flight data based on search inputs
         this.flightService.getOneWayFlights(from,to,departureDate,travelClass,Number(numAdults)+Number(numChildren)).subscribe(flights => {
           
@@ -30,6 +31,7 @@ export class SearchResultsComponent implements OnInit {
             }
           )
           this.searchResults = flights;
+          console.log(this.searchResults);
           });
       }else{
         this.flightService.getRoundTripFlights(from,to,departureDate,travelClass,Number(numAdults)+Number(numChildren),returnDate).subscribe(flights => {

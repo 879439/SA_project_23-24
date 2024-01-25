@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Flight } from '../flight.model';
+import { Flight, Flights } from '../flight.model';
 import { BookingService } from '../booking.service';
 import { CurrencyPipe } from '@angular/common';
 
@@ -10,7 +10,7 @@ import { CurrencyPipe } from '@angular/common';
   styleUrls: ['./booking-form.component.scss']
 })
 export class BookingFormComponent implements OnInit {
-  selectedFlight: any | null = null;
+  selectedFlight: Flights=new Flights();
   firstname: string = '';
   email: string = '';
   lastname: string = '';
@@ -32,8 +32,12 @@ export class BookingFormComponent implements OnInit {
       const flightId2 = params['flightId2'];
       this.type = params['type'];
       const searchResults = JSON.parse(params['searchResults']);
-      this.selectedFlight?.push(searchResults.find((flight: { id: number }) => flight.id === flightId1) || null);
-      this.selectedFlight?.push(searchResults.find((flight: { id: number }) => flight.id === flightId2) || null);
+      console.log("HIII")
+      console.log(searchResults);
+      console.log(flightId1);
+      console.log(flightId2);
+      this.selectedFlight.flight1 = searchResults.find((flight: { id: number }) => flight.id === flightId1);
+      this.selectedFlight.flight2 = searchResults.find((flight: { id: number }) => flight.id === flightId2);
       console.log(this.selectedFlight)
     });
   }

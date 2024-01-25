@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookingService } from '../booking.service';
-import { Flight } from '../flight.model';
+import { Flight, Flights } from '../flight.model';
 import html2canvas from 'html2canvas';
 import domtoimage from 'dom-to-image';
 
@@ -12,7 +12,7 @@ import domtoimage from 'dom-to-image';
 })
 export class ViewTicketComponent implements OnInit {
   bookingDetails: any;
-  selectedFlight: Flight | null = null;
+  selectedFlight: Flights | null = null;
 
   @ViewChild('ticketContainer', { static: true }) ticketContainer!: ElementRef;
 
