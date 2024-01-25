@@ -6,12 +6,9 @@ import org.example.backend.repositories.FlightRepository;
 import org.example.backend.repositories.UserRepository;
 import org.example.backend.requests.BookFlight;
 import org.example.backend.requests.Person;
-import org.example.backend.responses.MessageResponse;
 import org.json.JSONObject;
-import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +18,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 import org.json.JSONArray;
+
 
 @Service
 public class FlightService {
@@ -126,102 +123,129 @@ public class FlightService {
     public void deleteFlight(String id) {
         flightRepository.deleteById(id);
     }
-    public Booking bookFlightAux(Booking newBooking,String flightId,String discountCode, ArrayList<Person> people, TicketInfo ticketInfo){
+    public boolean setSeat(Booking booking,String seat,List<Seat> seats){
+        for(Seat s: seats){
+            if(s.getName().equals(seat)){
+                s.setAvailable(true);
+                booking.setPrice(booking.getPrice()+s.getPrice());
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean setFood(Booking booking,List<String> food,List<Food> foods){
+        if(food!=null) {
+            for (Food f : foods) {
+                if (food.contains(f.getName()) && f.getQuantity() > 0) {
+                    f.setQuantity(f.getQuantity() - 1);
+                    booking.setPrice(booking.getPrice() + f.getPrice());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public Passenger setPassenger(Person p){
+        Passenger p1 = new Passenger();
+        p1.setFirstname(p.getFirstname());
+        p1.setLastname(p.getLastname());
+        p1.setEmail(p.getEmail());
+        p1.setSex(p.getSex());
+        p1.setBirthday(p.getBirthday());
+        p1.setFoods(p.getFoods());
+        p1.setSeat(p.getSeat());
+        return p1;
+    }
+    public boolean makeBookingRoundTrip(Booking booking, String flightId1,String flightId2,Person p){
         AtomicReference<String> name = new AtomicReference<>(SecurityContextHolder.getContext().getAuthentication().getName());
-        Flight flight = flightRepository.findById(flightId).orElse(null);
+        Flight flight = flightRepository.findById(flightId1).orElse(null);
+        Flight flight2 = flightRepository.findById(flightId2).orElse(null);
         Optional<User> u = userRepository.findByUsername(name.get());
+        boolean flag=false;
         u.ifPresent(user->{
             name.set(user.getId());
         });
-        newBooking.setUserId(name.get());
-        boolean flag=false;
-        if (flight==null){
-            return null;
+        booking.setUserId(name.get());
+        if(flight==null || flight2==null){
+            return false;
         }
-        ticketInfo.getArrivals().add(flight.getArrival());
-        ticketInfo.getDepartures().add(flight.getDeparture());
-        ticketInfo.getDates().add(flight.getDate());
-        ticketInfo.getTimes().add(flight.getDeparture_time());
-        for(Person p: people) {
-            flag = false;
-            for (Seat seat1 : flight.getSeats()) {
-                if (seat1.getName().equals(p.getSeat())) {
-                    if (seat1.isAvailable()) {
-                        System.out.println(seat1.getName()+"CIAO "+p.getSeat());
-                        seat1.setAvailable(false);
-                        newBooking.setPrice(newBooking.getPrice()+seat1.getPrice());
-                        System.out.println("New price-->"+newBooking.getPrice());
-                        flightRepository.save(flight);
-                        flag = true;
-                    }
-                }
-            }
+        if(!setSeat(booking,p.getSeat(),flight.getSeats())){
+            return false;
         }
-
-        if(!flag){
-            return null;
+        if(!setSeat(booking,p.getReturnSeat(),flight2.getSeats())){
+            return false;
         }
-        System.out.println("CIAO ");
-        for(Person p: people) {
-            if(p.getFoods()!=null) {
-                for (Food f : flight.getFoods()) {
-                    if (p.getFoods().contains(f.getName()) && f.getQuantity() > 0) {
-                        f.setQuantity(f.getQuantity() - 1);
-                        newBooking.setPrice(newBooking.getPrice() + f.getPrice());
-                        flightRepository.save(flight);
-                    }
-                }
-            }
-        }
-        if(newBooking.getFlightIds().get("one-way").equals(flightId)) {
-            for (Person p : people) {
-                Passenger p1 = new Passenger();
-                p1.setFirstname(p.getFirstname());
-                p1.setLastname(p.getLastname());
-                p1.setEmail(p.getEmail());
-                p1.setSex(p.getSex());
-                p1.setBirthday(p.getBirthday());
-                p1.setFoods(p.getFoods());
-                p1.setSeat(p.getSeat());
-                p1.setFoods(p.getFoods());
-                p1.setSeat(p.getSeat());
-                newBooking.getPassengers().add(p1);
-
-
-            }
-        }
-        if(newBooking.getFlightIds().get("round-trip")==null || newBooking.getFlightIds().get("round-trip").equals(flightId)) {
-            newBooking.setDate(LocalDate.now().getYear() + "-" + LocalDate.now().getMonthValue() + "-" + LocalDate.now().getDayOfMonth());
-            if ( discountCode!=null && discountCode.equals(flight.getDiscountCode())) {
-                newBooking.setPrice((float) (newBooking.getPrice() - 0.1 * newBooking.getPrice()));
-            }
-        }
-        System.out.println("Ho finito"+ newBooking.getPrice());
-        newBooking=bookingRepository.save(newBooking);
-        ticketInfo.setPassengers(newBooking.getPassengers());
-        ticketInfo.setBookingId(newBooking.getId());
-        ticketInfo.setPrice(newBooking.getPrice());
-        return newBooking;
+        setFood(booking,p.getFoods(),flight.getFoods());
+        setFood(booking,p.getReturnFoods(),flight2.getFoods());
+        flightRepository.save(flight);
+        Passenger p1 = setPassenger(p);
+        p1.setReturnSeat(p.getReturnSeat());
+        p1.setReturnFoods(p.getReturnFoods());
+        booking.getPassengers().add(p1);
+        return true;
     }
-    public Booking bookFlight(BookFlight booking) {
-        Booking newBooking = new Booking(booking.getFlightId1(), booking.getType());
-        TicketInfo ticketInfo = new TicketInfo(booking.getType());
-        if(booking.getType().equals("one-way")){
-            newBooking = bookFlightAux(newBooking,booking.getFlightId1(), booking.getDiscountCode(), booking.getPeople(), ticketInfo);
-            createAndSendTicket(ticketInfo);
-            return newBooking;
-        }else{
-            Map<String,String > flightIds = newBooking.getFlightIds();
-            flightIds.put("round-trip", booking.getFlightId2());
-            newBooking.setFlightIds(flightIds);
-            newBooking = bookFlightAux(newBooking,booking.getFlightId1(), booking.getDiscountCode(), booking.getPeople(),ticketInfo);
-            if(newBooking==null){
-                return null;
-            }
-            newBooking = bookFlightAux(newBooking,booking.getFlightId2(), booking.getDiscountCode(), booking.getPeople(),ticketInfo);
-            createAndSendTicket(ticketInfo);
-            return newBooking;
+    public boolean makeBookingOneWay(Booking booking, String flightId, Person p){
+        AtomicReference<String> name = new AtomicReference<>(SecurityContextHolder.getContext().getAuthentication().getName());
+        Flight flight = flightRepository.findById(flightId).orElse(null);
+        Optional<User> u = userRepository.findByUsername(name.get());
+        boolean flag=false;
+        u.ifPresent(user->{
+            name.set(user.getId());
+        });
+        booking.setUserId(name.get());
+        if(flight==null){
+            return false;
         }
+        if(!setSeat(booking,p.getSeat(),flight.getSeats())){
+            return false;
+        }
+        setFood(booking,p.getFoods(),flight.getFoods());
+        flightRepository.save(flight);
+        Passenger p1 = setPassenger(p);
+        booking.getPassengers().add(p1);
+        return true;
+
+    }
+    public void setTicketInfo(TicketInfo ticketInfo, String flightId){
+        Flight flight = flightRepository.findById(flightId).orElse(null);
+        if(flight!=null) {
+            ticketInfo.getArrivals().add(flight.getArrival());
+            ticketInfo.getDepartures().add(flight.getDeparture());
+            ticketInfo.getDates().add(flight.getDate());
+            ticketInfo.getTimes().add(flight.getDeparture_time());
+        }
+
+    }
+    public Booking bookFlight(BookFlight bookFlight){
+        Booking booking = new Booking(bookFlight.getFlightId1(), bookFlight.getType());
+        TicketInfo ticketInfo = new TicketInfo(bookFlight.getType());
+        setTicketInfo(ticketInfo, booking.getFlightId1());
+        if(bookFlight.getType().equals("one-way")){
+            for (Person p: bookFlight.getPeople()){
+               if(!makeBookingOneWay(booking,bookFlight.getFlightId1(),p)){
+                   return null;
+               }
+            }
+        }else{
+            setTicketInfo(ticketInfo, bookFlight.getFlightId2());
+            booking.setFlightId2(bookFlight.getFlightId2());
+            for (Person p: bookFlight.getPeople()){
+                if(!makeBookingRoundTrip(booking,bookFlight.getFlightId1(), booking.getFlightId2(),p)){
+                    return null;
+                }
+            }
+        }
+        booking.setDate(LocalDate.now().getYear() + "-" + LocalDate.now().getMonthValue() + "-" + LocalDate.now().getDayOfMonth());
+        Flight flight = flightRepository.findById(bookFlight.getFlightId1()).orElse(null);
+        if ( bookFlight.getDiscountCode()!=null && bookFlight.getDiscountCode().equals(flight.getDiscountCode())) {
+            booking.setPrice((float) (booking.getPrice() - 0.1 * booking.getPrice()));
+        }
+        bookingRepository.save(booking);
+        ticketInfo.setPassengers(booking.getPassengers());
+        ticketInfo.setBookingId(booking.getId());
+        ticketInfo.setPrice(booking.getPrice());
+        createAndSendTicket(ticketInfo);
+        return booking;
 
     }
     public void createAndSendTicket(TicketInfo ticketInfo) {
@@ -231,9 +255,12 @@ public class FlightService {
 
     public List<Flight> findFlights(String departure, String arrival, String date, String travelClass, int nPerson){
         List<Flight> flights = flightRepository.findByCitiesAndDate(departure,arrival,date);
+        System.out.println("SO-->"+departure+" "+arrival);
         System.out.println("SO-->"+flights.get(0).getTravelClass());
-        flights.removeIf(f -> !f.getTravelClass().equals(travelClass));
-
+        System.out.println("SO-->"+travelClass);
+        if(!Objects.equals(travelClass, "")) {
+            flights.removeIf(f -> !f.getTravelClass().equals(travelClass));
+        }
         for(Flight f: flights){
             f.getSeats().removeIf(s -> !s.isAvailable());
         }

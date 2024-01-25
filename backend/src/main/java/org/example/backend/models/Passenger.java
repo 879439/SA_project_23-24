@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.List;
+
 @Document(collection = "passengers")
 public class Passenger {
     @Id
@@ -14,9 +16,11 @@ public class Passenger {
     private String birthday;
     private String sex;
     private String email;
-    private String Seat;
+    private String seat;
+    private String returnSeat;
     private boolean isAdult;
-    private ArrayList<String> foods;
+    private List<String> foods;
+    private List<String> returnFoods;
 
     public String getId() {
         return id;
@@ -83,18 +87,34 @@ public class Passenger {
     }
 
     public String getSeat() {
-        return Seat;
+        return seat;
     }
 
     public void setSeat(String seat) {
-        Seat = seat;
+        this.seat = seat;
     }
 
-    public ArrayList<String> getFoods() {
+    public List<String> getFoods() {
         return foods;
     }
 
-    public void setFoods(ArrayList<String> foods) {
+    public void setFoods(List<String> foods) {
         this.foods = foods;
+    }
+
+    public String getReturnSeat() {
+        return returnSeat;
+    }
+
+    public void setReturnSeat(String returnSeat) {
+        this.returnSeat = returnSeat;
+    }
+
+    public List<String> getReturnFoods() {
+        return returnFoods;
+    }
+
+    public void setReturnFoods(List<String> returnFoods) {
+        this.returnFoods = returnFoods;
     }
 }

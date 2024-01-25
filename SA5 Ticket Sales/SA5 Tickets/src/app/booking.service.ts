@@ -14,11 +14,11 @@ export class BookingService {
   private apiUrl = "http://localhost:8080/api/bookings";
   constructor(private http:HttpClient, private flightService:FlightService) { }
 
-  bookFlight(firstname: string, lastname: string, birthday: string, email: string,sex:string,foodSelection:string,seatSelection:string, flight: any,type:string):Observable<any[]> {
+  bookFlight(passengers:any[],flight: any,type:string):Observable<any[]> {
 
     // Simulate saving the booking data (you can replace this with server API calls)
     const booking = {
-      people: [{firstname,lastname,birthday,email,sex,foods:[foodSelection],seat:seatSelection}],
+      people: passengers,
       flightId1: flight.flight1.id,
       flightId2: flight.flight2.id,
       type:type,

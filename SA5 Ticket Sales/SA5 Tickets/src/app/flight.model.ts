@@ -1,6 +1,7 @@
 export class Flights {
   flight1!: Flight;
   flight2!: Flight;
+  price!: number;
   
 }
 export interface Flight {

@@ -14,9 +14,10 @@ export class SearchFlightComponent {
   from: string = '';
   to: string = '';
   departureDate: string = '';
+  returnDate: string='';
   numAdults: number = 1;
   numChildren: number = 0;
-  travelClass: string = 'Economy';
+  travelClass: string = '';
   errorMessage: string = '';
 
   constructor(private router: Router, private flightService: FlightService) { }
@@ -40,7 +41,8 @@ export class SearchFlightComponent {
         departureDate: this.departureDate,
         numAdults: this.numAdults,
         numChildren: this.numChildren,
-        travelClass: this.travelClass
+        travelClass: this.travelClass,
+        returnDate: this.returnDate
       }
     });
   }

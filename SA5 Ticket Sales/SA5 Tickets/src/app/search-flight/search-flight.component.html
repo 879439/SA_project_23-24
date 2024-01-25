@@ -28,6 +28,10 @@
         <label for="departureDate">Departing</label>
         <input type="date" class="form-control" id="departureDate" name="departureDate" [(ngModel)]="departureDate" required>
       </div>
+      <div class="col-md-6"*ngIf="tripType=='round-trip'">
+        <label for="departureDate">Return Date</label>
+        <input type="date" class="form-control" id="departureDate" name="departureDate" [(ngModel)]="returnDate" required>
+      </div>
     </div>
     <div class="row mb-3">
       <div class="col-md-4">
@@ -51,6 +55,7 @@
       <div class="col-md-4">
         <label for="travelClass">Class</label>
         <select class="form-select" id="travelClass" name="travelClass" [(ngModel)]="travelClass" required>
+          <option value="">No filter</option>
           <option value="economy">Economy</option>
           <option value="business">Business</option>
           <option value="firstClass">First Class</option>

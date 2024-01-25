@@ -13,6 +13,8 @@ import { FlightService } from '../flight.service';
 export class SearchResultsComponent implements OnInit {
   searchResults: any[] = [];
   tripType = "";
+  numAdults!: number;
+  numChildren!: number;
   constructor(private route: ActivatedRoute, private router: Router, private flightService: FlightService) { }
 
   ngOnInit() {
@@ -20,6 +22,8 @@ export class SearchResultsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const { tripType, from, to, departureDate, numAdults, numChildren, travelClass , returnDate} = params;
       this.tripType = tripType;
+      this.numAdults=numAdults;
+      this.numChildren=numChildren;
       if(tripType==="one-way"){
         console.log("HEREEEE")
       // Call the service to get mock flight data based on search inputs
@@ -34,6 +38,8 @@ export class SearchResultsComponent implements OnInit {
           console.log(this.searchResults);
           });
       }else{
+        console.log(this.tripType)
+        console.log(returnDate)
         this.flightService.getRoundTripFlights(from,to,departureDate,travelClass,Number(numAdults)+Number(numChildren),returnDate).subscribe(flights => {
           
           flights.forEach(
@@ -48,16 +54,31 @@ export class SearchResultsComponent implements OnInit {
     
   };
 
-  bookFlight(flight: Flight) {
+  bookFlight(flight:any) {
     // Navigate to the BookingFormComponent and pass the selected flight and search results as query parameters
-    this.router.navigate(['/booking-form'], {
-      queryParams: {
-        flightId1: flight.id,
-        flightId2: flight.id,
-        type: this.tripType,
-        searchResults: JSON.stringify(this.searchResults) // Convert searchResults array to JSON string
-      }
-    });
+    if(this.tripType==="one-way"){
+      this.router.navigate(['/booking-form'], {
+        queryParams: {
+          flightId1: flight.id,
+          numAdults:this.numAdults,
+          numChildren:this.numChildren,
+          type: this.tripType,
+          searchResults: JSON.stringify(this.searchResults) // Convert searchResults array to JSON string
+        }
+      });
+    }else{
+      this.router.navigate(['/booking-form'], {
+        queryParams: {
+          flightId1: flight.flight1.id,
+          flightId2: flight.flight2.id,
+          numAdults:this.numAdults,
+          numChildren:this.numChildren,
+          type: this.tripType,
+          searchResults: JSON.stringify(this.searchResults) // Convert searchResults array to JSON string
+        }
+      });
+    }
+    
   }
 };
 function flights(value: Flight[]): void {

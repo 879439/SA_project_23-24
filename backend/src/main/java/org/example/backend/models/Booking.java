@@ -15,7 +15,8 @@ public class Booking {
     @Id
     private String id;
     @NotNull
-    private Map<String,String> flightIds= new HashMap<>();
+    private String  flightId1;
+    private String  flightId2;
     private String userId;
     @NotNull
     private String type;
@@ -31,15 +32,15 @@ public class Booking {
     }
 
     public Booking(String flightId1, String flightId2, String type){
-        this.flightIds.put("one-way",flightId1);
-        this.flightIds.put("round-trip",flightId2);
+        this.flightId1 = flightId1;
+        this.flightId2 = flightId2;
         this.type=type;
         this.passengers = new ArrayList<Passenger>();
 
 
     }
     public Booking(String flightId, String type){
-        this.flightIds.put("one-way",flightId);
+        this.flightId1=flightId;
         this.type=type;
         this.passengers = new ArrayList<Passenger>();
 
@@ -59,13 +60,6 @@ public class Booking {
         return type;
     }
 
-    public Map<String, String> getFlightIds() {
-        return flightIds;
-    }
-
-    public void setFlightIds(Map<String, String> flightIds) {
-        this.flightIds = flightIds;
-    }
 
     public void setType(String type) {
         this.type = type;
@@ -97,6 +91,22 @@ public class Booking {
 
     public ArrayList<Passenger> getPassengers() {
         return passengers;
+    }
+
+    public String getFlightId1() {
+        return flightId1;
+    }
+
+    public void setFlightId1(String flightId1) {
+        this.flightId1 = flightId1;
+    }
+
+    public String getFlightId2() {
+        return flightId2;
+    }
+
+    public void setFlightId2(String flightId2) {
+        this.flightId2 = flightId2;
     }
 
     public void setPassengers(ArrayList<Passenger> passengers) {

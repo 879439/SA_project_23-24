@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class FlightRequestSender {
 
-    private static final String[] cities = {"Rome", "Milan", "Naples", "Turin", "Paris", "Madrid", "Barcelona", "Florence"};
+    private static final String[] cities = {"Rome", "Milan", "Naples", "Turin","Florence"};
     private static final String[] companies = {"Ryanair", "EasyJet", "Alitalia"};
     private static final String[] foods = {"Pizza", "Sandwich", "Hamburgher"};
     private static final String[] sizes = {"small", "medium", "big"};
@@ -23,7 +23,7 @@ public class FlightRequestSender {
         HttpClient client = HttpClient.newHttpClient();
         String url = "http://localhost:8080/api/flights";
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             String departureCity = cities[random.nextInt(cities.length)];
             String arrivalCity = cities[random.nextInt(cities.length)];
             while (arrivalCity.equals(departureCity)) {

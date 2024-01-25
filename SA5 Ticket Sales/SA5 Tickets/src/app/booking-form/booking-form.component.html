@@ -8,7 +8,8 @@
           <p class="card-text">Origin: {{ selectedFlight.flight1.departure }}</p>
           <p class="card-text">Destination: {{ selectedFlight.flight1.arrival }}</p>
           <p class="card-text">Date: {{ selectedFlight.flight1.date }}</p>
-          <p class="card-text">Price: {{ selectedFlight.flight1.price| currency }}</p>
+          <p class="card-text" *ngIf="type=='round-trip'">Return date: {{ selectedFlight.flight2.date }}</p>
+          <p class="card-text">Price: {{ selectedFlight.price || selectedFlight.flight1.price }}</p>
         </div>
       </div>
     </div>
@@ -19,6 +20,8 @@
         <div class="card-body">
           <h2 class="card-title">Booking Form</h2>
           <form (submit)="submitBookingForm()">
+            
+              <h3>Passenger {{currentPassengerIndex+1}}</h3>
             <div class="form-group">
               <label for="passengerName">FirstName:</label>
               <input type="text" class="form-control" id="passengerName" name="passengerName" [(ngModel)]="firstname" required>
@@ -49,16 +52,29 @@
                   
               </select>
             </div>
-            <div class="form-group">
-              <label for="seatSelection">Food Selection:</label>
-              <select class="form-control" id="seatSelection" name="foodSelection" [(ngModel)]="foodSelection" required>
-               
-                      <option *ngFor="let food of selectedFlight.flight1.foods" [value]="food.name">{{food.name}}</option>
+            <div *ngIf="type=='round-trip'" class="form-group">
+              <label for="seatSelection">Return Seat Selection:</label>
+              <select class="form-control" id="seatSelection" name="seatSelection" [(ngModel)]="returnSeatSelection" required>
+                      <option *ngFor="let seat of selectedFlight.flight2.seats" [value]="seat.name">{{seat.name}}</option>
                   
               </select>
             </div>
-            <button type="submit" class="btn btn-primary">Confirm Booking</button>
-            <button type="button" class="btn btn-secondary" (click)="resetForm()">Reset</button>
+            <div class="form-group">
+              <label for="seatSelection">Food Selection:</label>
+              <select class="form-control" id="seatSelection" name="foodSelection" [(ngModel)]="foodSelection" required>
+                      <option *ngFor="let food of selectedFlight.flight1.foods" [value]="food.name">{{food.name}}</option>
+              </select>
+            </div>
+            <div *ngIf="type=='round-trip'" class="form-group">
+              <label for="seatSelection">Food Selection:</label>
+              <select class="form-control" id="seatSelection" name="foodSelection" [(ngModel)]="returnFoodSelection" required>
+                      <option *ngFor="let food of selectedFlight.flight2.foods" [value]="food.name">{{food.name}}</option>
+              </select>
+            </div>
+            <button *ngIf="currentPassengerIndex==n-1" type="submit" class="btn btn-primary">Confirm Booking</button>
+            <button *ngIf="currentPassengerIndex!=n-1" type="button" (click)="addPassenger()" class="btn btn-primary">AddPassenger</button>
+            <button type="button" class="btn btn-secondary">Reset</button>
+             
           </form>
         </div>
       </div>

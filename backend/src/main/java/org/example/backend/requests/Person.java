@@ -5,6 +5,7 @@ import org.example.backend.Annotations.ValidDate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Person {
     @NotNull
@@ -21,7 +22,9 @@ public class Person {
     private String email;
     @NotNull
     private String seat;
-    private ArrayList<String> foods;
+    private String returnSeat;
+    private List<String> foods;
+    private List<String> returnFoods;
 
     public String getFirstname() {
         return firstname;
@@ -71,11 +74,27 @@ public class Person {
         this.seat = seat;
     }
 
-    public ArrayList<String> getFoods() {
+    public List<String> getFoods() {
         return foods;
     }
 
-    public void setFoods(ArrayList<String> foods) {
+    public void setFoods(List<String> foods) {
         this.foods = foods;
+    }
+
+    public String getReturnSeat() {
+        return returnSeat;
+    }
+
+    public void setReturnSeat(String returnSeat) {
+        this.returnSeat = returnSeat;
+    }
+
+    public List<String> getReturnFoods() {
+        return returnFoods;
+    }
+
+    public void setReturnFoods(List<String> returnFoods) {
+        this.returnFoods = returnFoods;
     }
 }
