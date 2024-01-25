@@ -20,6 +20,7 @@ public class EmailService {
         try {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            System.out.println("Sending email..");
             helper.setFrom("no-reply@saproject.com");
             helper.setTo(passengers.get(0).getEmail());
             helper.setSubject(subject);

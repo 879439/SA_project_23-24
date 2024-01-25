@@ -1,4 +1,5 @@
 package org.example.backend.models;
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import org.example.backend.Annotations.ValidDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,11 +25,13 @@ public class Flight {
     private String departure_time;
     @NotBlank
     private String arrival_time;
+    @NotBlank
+    private String travelClass;
     private ArrayList<Food> foods;
     private ArrayList<Seat> seats;
     private String discountCode;
 
-    public Flight(String company, String departure, String arrival, String date, String departure_time,String arrival_time, String discountCode, ArrayList<Food> foods) {
+    public Flight(String company, String departure, String arrival, String date, String departure_time,String arrival_time, String discountCode, ArrayList<Food> foods, String travelClass) {
         this.company = company;
         this.departure = departure;
         this.arrival = arrival;
@@ -37,6 +40,7 @@ public class Flight {
         this.arrival_time = arrival_time;
         this.discountCode = discountCode;
         this.foods = foods;
+        this.travelClass = travelClass;
     }
 
     public String getDiscountCode() {
@@ -117,5 +121,13 @@ public class Flight {
 
     public void setSeats(ArrayList<Seat> seats) {
         this.seats = seats;
+    }
+
+    public String getTravelClass() {
+        return travelClass;
+    }
+
+    public void setTravelClass(String travelClass) {
+        this.travelClass = travelClass;
     }
 }

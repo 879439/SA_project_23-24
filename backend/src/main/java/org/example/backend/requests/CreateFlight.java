@@ -22,6 +22,8 @@ public class CreateFlight {
     private String departure_time;
     @NotBlank
     private String arrival_time;
+    @NotBlank
+    private String travelClass;
     private ArrayList<Food> foods;
     private String size;
     private String discountCode;
@@ -96,5 +98,13 @@ public class CreateFlight {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public String getTravelClass() {
+        return travelClass;
+    }
+
+    public void setTravelClass(String travelClass) {
+        this.travelClass = travelClass;
     }
 }

@@ -8,6 +8,7 @@ import org.example.backend.requests.BookFlight;
 import org.example.backend.requests.Person;
 import org.example.backend.responses.MessageResponse;
 import org.json.JSONObject;
+import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 
@@ -56,7 +58,8 @@ public class FlightService {
 
     public Flight saveFlight(Flight flight, String size) throws IOException {
         int c=0,r=0;
-        double price = priceCalculation(flight.getArrival(), flight.getDeparture());
+        double price = priceCalculation(flight.getArrival(), flight.getDeparture(),flight.getTravelClass());
+        double childrenPrice = (price*3)/4;
         System.out.println("Il prezzo "+price);
         if(size.equals("small")){
             c=10;
@@ -73,7 +76,7 @@ public class FlightService {
         char a='A';
         for(int i=0;i<c;i++){
             for(int j=0;j<r;j++){
-                Seat s = new Seat(a+""+j,true,price);
+                Seat s = new Seat(a+""+j,true,price,childrenPrice);
                 seats.add(s);
             }
             int charValue = a;
@@ -83,7 +86,7 @@ public class FlightService {
         flight.setSeats(seats);
         return flightRepository.save(flight);
     }
-    public double priceCalculation(String departure, String arrival) throws IOException {
+    public double priceCalculation(String departure, String arrival, String travelClass) throws IOException {
         double[] DepartureCoordinates = getCoordinates(departure);
         double[] ArrivalCoordinates = getCoordinates(arrival);
         System.out.println(DepartureCoordinates[0] + " E "+ArrivalCoordinates[1]);
@@ -92,8 +95,13 @@ public class FlightService {
 
         dist = Math.acos(dist);
         dist = Math.toDegrees(dist);
-        dist = dist * 60 * 1.1515*1.609344;
-        return dist*0.5;
+        dist = dist * 60 * 1.1515*1.609344*0.5;
+        if(travelClass.equals("business")){
+            dist = dist *1.4;
+        } else if (travelClass.equals("firstclass")) {
+            dist = dist *1.8;
+        }
+        return dist;
     }
 
     public double[] getCoordinates(String city) throws IOException {
@@ -135,14 +143,14 @@ public class FlightService {
         ticketInfo.getDates().add(flight.getDate());
         ticketInfo.getTimes().add(flight.getDeparture_time());
         for(Person p: people) {
+            flag = false;
             for (Seat seat1 : flight.getSeats()) {
-
                 if (seat1.getName().equals(p.getSeat())) {
-
                     if (seat1.isAvailable()) {
                         System.out.println(seat1.getName()+"CIAO "+p.getSeat());
                         seat1.setAvailable(false);
                         newBooking.setPrice(newBooking.getPrice()+seat1.getPrice());
+                        System.out.println("New price-->"+newBooking.getPrice());
                         flightRepository.save(flight);
                         flag = true;
                     }
@@ -199,7 +207,9 @@ public class FlightService {
         Booking newBooking = new Booking(booking.getFlightId1(), booking.getType());
         TicketInfo ticketInfo = new TicketInfo(booking.getType());
         if(booking.getType().equals("one-way")){
-            return bookFlightAux(newBooking,booking.getFlightId1(), booking.getDiscountCode(), booking.getPeople(), ticketInfo);
+            newBooking = bookFlightAux(newBooking,booking.getFlightId1(), booking.getDiscountCode(), booking.getPeople(), ticketInfo);
+            createAndSendTicket(ticketInfo);
+            return newBooking;
         }else{
             Map<String,String > flightIds = newBooking.getFlightIds();
             flightIds.put("round-trip", booking.getFlightId2());
@@ -219,11 +229,28 @@ public class FlightService {
         emailService.sendTicketEmail(ticketInfo.getPassengers(), "Your Ticket id:"+ticketInfo.getBookingId(), "Here is your ticket", pdfBytes);
     }
 
-    public List<Flight> findFlights(String departure, String arrival, String date){
-        return flightRepository.findByCitiesAndDate(departure,arrival,date);
+    public List<Flight> findFlights(String departure, String arrival, String date, String travelClass, int nPerson){
+        List<Flight> flights = flightRepository.findByCitiesAndDate(departure,arrival,date);
+        System.out.println("SO-->"+flights.get(0).getTravelClass());
+        flights.removeIf(f -> !f.getTravelClass().equals(travelClass));
+
+        for(Flight f: flights){
+            f.getSeats().removeIf(s -> !s.isAvailable());
+        }
+
+        flights=flights.stream().filter(flight -> flight.getSeats().size()>nPerson).toList();
+
+        return flights;
     }
-    public List<Flight> findFlights(String departure, String arrival, String date, String returnDate){
-        return flightRepository.findByCitiesAndDate(departure,arrival,date,returnDate);
+    public List<Flight> findFlights(String departure, String arrival, String date, String returnDate,String travelClass, int nPerson){
+        List<Flight> flights = flightRepository.findByCitiesAndDate(departure,arrival,date,returnDate);
+        flights.removeIf(f -> !f.getTravelClass().equals(travelClass));
+        for(Flight f: flights){
+            f.getSeats().removeIf(s -> !s.isAvailable());
+        }
+
+        flights=flights.stream().filter(flight -> flight.getSeats().size()>nPerson).toList();
+        return flights;
     }
 
 

@@ -27,6 +27,9 @@ public class Booking {
     @ValidDate
     private String date;
 
+    public Booking() {
+    }
+
     public Booking(String flightId1, String flightId2, String type){
         this.flightIds.put("one-way",flightId1);
         this.flightIds.put("round-trip",flightId2);

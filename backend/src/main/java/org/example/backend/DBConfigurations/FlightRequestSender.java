@@ -12,10 +12,11 @@ import java.util.Random;
 
 public class FlightRequestSender {
 
-    private static final String[] cities = {"Rome", "Milan", "Naples", "Turin", "Paris", "Madrid", "Barcelona", "Florence", "Oslo", "Venice", "Amsterdam", "London", "Padua", "Dortmund", "Kiev"};
+    private static final String[] cities = {"Rome", "Milan", "Naples", "Turin", "Paris", "Madrid", "Barcelona", "Florence"};
     private static final String[] companies = {"Ryanair", "EasyJet", "Alitalia"};
     private static final String[] foods = {"Pizza", "Sandwich", "Hamburgher"};
     private static final String[] sizes = {"small", "medium", "big"};
+    private static final String[] travelClasses = {"economy", "business", "firstClass"};
     private static final Random random = new Random();
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -32,6 +33,7 @@ public class FlightRequestSender {
             String company = companies[random.nextInt(companies.length)];
             String food = foods[random.nextInt(foods.length)];
             String size = sizes[random.nextInt(sizes.length)];
+            String travelClass = travelClasses[random.nextInt(travelClasses.length)];
             LocalDate date = LocalDate.now().plusDays(random.nextInt(30));
             String departureTime = LocalTime.now().plusHours(random.nextInt(12)).format(DateTimeFormatter.ofPattern("HH:mm"));
             String arrivalTime = LocalTime.parse(departureTime).plusHours(random.nextInt(12) + 1).format(DateTimeFormatter.ofPattern("HH:mm"));;
@@ -48,9 +50,10 @@ public class FlightRequestSender {
                         "arrival_time": "%s",
                         "foods": [{"name": "%s", "quantity": %d, "price": %.2f}],
                         "size": "%s",
-                        "discount_code": "%s"
+                        "discount_code": "%s",
+                        "travelClass": "%s"
                     }""",
-                    company, departureCity, arrivalCity, date, departureTime, arrivalTime, food, random.nextInt(10) + 1, random.nextDouble() * 50, size, discountCode);
+                    company, departureCity, arrivalCity, date, departureTime, arrivalTime, food, random.nextInt(10) + 1, random.nextDouble() * 50, size, discountCode,travelClass);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))

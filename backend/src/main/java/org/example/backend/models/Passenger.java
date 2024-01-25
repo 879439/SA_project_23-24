@@ -15,6 +15,7 @@ public class Passenger {
     private String sex;
     private String email;
     private String Seat;
+    private boolean isAdult;
     private ArrayList<String> foods;
 
     public String getId() {
@@ -23,6 +24,14 @@ public class Passenger {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isAdult() {
+        return isAdult;
+    }
+
+    public void setAdult(boolean adult) {
+        isAdult = adult;
     }
 
     public String getUserId() {

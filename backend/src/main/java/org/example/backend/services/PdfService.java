@@ -28,6 +28,7 @@ public class PdfService {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try {
+            System.out.println("Creating pdf..");
             PdfWriter writer = new PdfWriter(byteArrayOutputStream);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
@@ -36,9 +37,9 @@ public class PdfService {
             ImageData img= ImageDataFactory.create(b);
             document.add(new Image(img));
             document.add(new Paragraph("Flight Details:"+"\n"+"Type: "+ticketInfo.getType()).setFontSize(26).setBold());
-            document.add(new Paragraph("Departure: "+ticketInfo.getDepartures().get(0)+"    Arrival: "+ticketInfo.getDepartures().get(0)+"      Date: "+ticketInfo.getDates().get(0)+" "+ticketInfo.getTimes().get(0)+"\n"));
+            document.add(new Paragraph("Departure: "+ticketInfo.getDepartures().get(0)+"    Arrival: "+ticketInfo.getArrivals().get(0)+"      Date: "+ticketInfo.getDates().get(0)+" "+ticketInfo.getTimes().get(0)+"\n"));
             if(ticketInfo.getType().equals("round-trip")){
-                document.add(new Paragraph("Departure: "+ticketInfo.getDepartures().get(1)+"    Arrival: "+ticketInfo.getDepartures().get(1)+"      Date: "+ticketInfo.getDates().get(1)+" "+ticketInfo.getTimes().get(1)+"\n"));
+                document.add(new Paragraph("Departure: "+ticketInfo.getDepartures().get(1)+"    Arrival: "+ticketInfo.getArrivals().get(1)+"      Date: "+ticketInfo.getDates().get(1)+" "+ticketInfo.getTimes().get(1)+"\n"));
             }
             document.add(new Paragraph("Number of Passengers: "+ticketInfo.getPassengers().size()+"\n").setFontSize(26).setBold());
             for(Passenger p: ticketInfo.getPassengers()){

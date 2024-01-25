@@ -1,0 +1,21 @@
+<!-- search-results.component.html -->
+
+<div class="container mt-3">
+    <h2>Search Results</h2>
+    <div *ngIf="searchResults.length > 0; else noResults">
+      <div class="card mb-3  flight-card" *ngFor="let flight of searchResults">
+        <div class="card-body">
+          <h5 class="card-title">Flight {{ flight.id }}</h5>
+          <p class="card-text">Origin: {{ flight.departure }}</p>
+          <p class="card-text">Destination: {{ flight.arrival }}</p>
+          <p class="card-text">Date: {{ flight.date }}</p>
+          <p class="card-text">Price: {{ flight.price | currency }}</p>
+          <button class="btn btn-primary" (click)="bookFlight(flight)">Book Now</button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noResults>
+      <p>No flights found for the given search criteria.</p>
+    </ng-template>
+  </div>
+  

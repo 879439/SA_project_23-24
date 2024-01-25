@@ -1,0 +1,95 @@
+<div class="container mt-5"  #ticketContainer>
+  <div *ngIf="selectedFlight; else noFlightSelected">
+    <div class="ticket p-4 bg-light border rounded">
+      <!-- PNR Number Section -->
+      <div class="pnr-section mb-4">
+        <h2 class="mb-0">PNR Number: {{ bookingDetails.pnrNumber }}</h2>
+      </div>
+      <!-- booking date -->
+      <div class="booking-date-section mb-4">
+        <strong>Booking Date:</strong>
+        {{ bookingDetails.bookingDate }}
+      </div>
+      <!-- Passenger Details Section -->
+      <div class="passenger-section mb-4">
+        <h3>Passenger Details</h3>
+        <div class="row">
+          <div class="col-md-4">
+            <strong>Passenger Name:</strong>
+            {{ bookingDetails.passengerName }}
+          </div>
+          <div class="col-md-4">
+            <strong>Email:</strong>
+            {{ bookingDetails.passengerEmail }}
+          </div>
+          <div class="col-md-4">
+            <strong>Phone Number:</strong>
+            {{ bookingDetails.passengerPhone }}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Flight Details Section -->
+      <div class="flight-section mb-4">
+        <h3>Flight Details</h3>
+        <div class="row">
+          <div class="col-md-3">
+            <strong>Flight Code:</strong>
+             {{ selectedFlight.id }}
+          </div>
+          <div class="col-md-3">
+            <strong>Origin:</strong>
+            {{ selectedFlight.departure }}
+          </div>
+          <div class="col-md-3">
+            <strong>Destination:</strong>
+            {{ selectedFlight.arrival }}
+          </div>
+          <div class="col-md-3">
+            <strong>Date:</strong>
+            {{ selectedFlight.date }}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Fare Breakdown Section -->
+      <div class="fare-section mb-4">
+        <h3>Fare Breakdown</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Base Fare:</strong>
+            {{ getPriceFormatted(selectedFlight.price) }}
+          </div>
+          <!-- Add more fare breakdown details here if needed -->
+        </div>
+      </div>
+      
+      <!-- Additional Information Section -->
+      <div class="additional-info">
+        <h3>Additional Information</h3>
+        <div class="policy">
+          <h4>Privacy Policy</h4>
+          <!-- Add privacy policy content here -->
+        </div>
+        <div class="restricted-items">
+          <h4>Restricted Items</h4>
+          <!-- Add restricted items information here -->
+        </div>
+        <div class="terms-conditions">
+          <h4>Terms and Conditions</h4>
+          <!-- Add terms and conditions content here -->
+        </div>
+      </div>
+      
+      <!-- Thank You Message -->
+      <div class="thank-you mt-3">
+        <p class="text-center">THANK YOU FOR MAKING US YOUR AIRLINE OF CHOICE!<br> HAVE A SAFE FLIGHT</p>
+      </div>
+      
+    </div>
+    <button class="btn btn-primary mt-3" (click)="downloadTicket()">Download Ticket</button>
+  </div>
+  <ng-template #noFlightSelected>
+    <p>No flight selected.</p>
+  </ng-template>
+</div>
