@@ -36,9 +36,7 @@ public class User {
     @NotBlank
     @Size(max = 120)
     private String password;
-
-    @DBRef
-    private Set<Role> roles = new HashSet<>();
+    private String role;
 
     public User() {
     }
@@ -85,12 +83,12 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getFirstname() {

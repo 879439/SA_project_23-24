@@ -1,6 +1,5 @@
 package org.example.backend.controllers;
 
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +9,7 @@ import java.util.stream.Collectors;
 
 import org.example.backend.jwt.JwtUtils;
 import org.example.backend.models.ERole;
-import org.example.backend.models.Role;
 import org.example.backend.models.User;
-import org.example.backend.repositories.RoleRepository;
 import org.example.backend.repositories.UserRepository;
 import org.example.backend.requests.LoginRequest;
 import org.example.backend.requests.SignupRequest;
@@ -20,17 +17,14 @@ import org.example.backend.responses.MessageResponse;
 import org.example.backend.responses.UserInfoResponse;
 import org.example.backend.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,9 +38,6 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -65,16 +56,13 @@ public class AuthController {
 
         String jwt = jwtUtils.generateJwt(userDetails);
 
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
         Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
         if(user.isPresent()) {
             return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                     .body(new UserInfoResponse(user.get().getId(),
                             userDetails.getUsername(),
-                            userDetails.getEmail(),
-                            roles,user.get().getFirstname(),user.get().getLastname(),user.get().getBirthday(),user.get().getSex()));
+                            userDetails.getEmail(),user.get().getRole()
+                            ,user.get().getFirstname(),user.get().getLastname(),user.get().getBirthday(),user.get().getSex()));
         }else{
             return ResponseEntity.badRequest().body("Bad credentials");
         }
@@ -105,27 +93,17 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),signUpRequest.getLastname(),signUpRequest.getFirstname(), signUpRequest.getBirthday(),signUpRequest.getSex());
 
-        Set<String> strRoles = signUpRequest.getRoles();
-        Set<Role> roles = new HashSet<>();
-        if (strRoles.isEmpty()) {
-            Role userRole = new Role(ERole.ROLE_USER);
-            roles.add(userRole);
-            roleRepository.save(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                if (role.equals("admin")) {
-                    Role adminRole = new Role(ERole.ROLE_ADMIN);
-                    roles.add(adminRole);
-                    roleRepository.save(adminRole);
-                } else {
-                    Role userRole = new Role(ERole.ROLE_USER);
-                    roles.add(userRole);
-                    roleRepository.save(userRole);
-                }
-            });
-        }
+        String role = signUpRequest.getRole();
 
-        user.setRoles(roles);
+        if (role==null || role.isEmpty()) {
+            user.setRole("user");
+        } else {
+            if(role.equals("admin")){
+                user.setRole(role);
+            }else{
+                user.setRole("user");
+            }
+        }
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

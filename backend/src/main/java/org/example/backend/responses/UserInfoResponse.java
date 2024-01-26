@@ -7,17 +7,17 @@ public class UserInfoResponse {
     private String id;
     private String username;
     private String email;
-    private List<String> roles;
+    private String role;
     private String firstname;
     private String lastname;
     private String birthday;
     private String sex;
 
-    public UserInfoResponse(String id, String username, String email, List<String> roles,String firstname,String lastname,String birthday,String sex) {
+    public UserInfoResponse(String id, String username, String email, String role,String firstname,String lastname,String birthday,String sex) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.roles = roles;
+        this.role = role;
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthday = birthday;
@@ -48,12 +48,12 @@ public class UserInfoResponse {
         this.username = username;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getFirstname() {

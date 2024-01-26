@@ -2,6 +2,7 @@ package org.example.backend.repositories;
 
 import org.example.backend.models.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 

@@ -2,7 +2,7 @@ package org.example.backend.configurations;
 
 import org.example.backend.jwt.AuthEntryPointJwt;
 import org.example.backend.jwt.AuthTokenFilter;
-import org.example.backend.services.UserDetailsServiceImpl;
+import org.example.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -35,7 +36,7 @@ import org.springframework.web.filter.CorsFilter;
 //prePostEnabled = true) // by default
 public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    UserService userService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
@@ -54,7 +55,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService((UserDetailsService) userService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
