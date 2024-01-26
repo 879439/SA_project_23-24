@@ -46,6 +46,7 @@ public class Booking {
 
 
     }
+
     // Getters and setters
 
     public String getUserId() {

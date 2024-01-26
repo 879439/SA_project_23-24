@@ -21,7 +21,7 @@
           <h2 class="card-title">Booking Form</h2>
           <form (submit)="submitBookingForm()">
             
-              <h3>Passenger {{currentPassengerIndex+1}}</h3>
+              <h3>Passenger {{currentPassengerIndex+1}}</h3> <h4 *ngIf="isAdult==true">Adult</h4><h4 *ngIf="isAdult!=true">Child</h4>
             <div class="form-group">
               <label for="passengerName">FirstName:</label>
               <input type="text" class="form-control" id="passengerName" name="passengerName" [(ngModel)]="firstname" required>

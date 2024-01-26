@@ -35,6 +35,7 @@ public class BookingService {
     public List<Booking> getBookingsByUserId(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<User> user = userRepository.findByUsername(name);
+        System.out.println(name);
         AtomicReference<String> userId = new AtomicReference<>("");
         user.ifPresent(user1 -> {
             userId.set(user1.getId());

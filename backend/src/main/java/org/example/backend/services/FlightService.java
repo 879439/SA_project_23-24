@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.bson.Document;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -123,20 +125,24 @@ public class FlightService {
     public void deleteFlight(String id) {
         flightRepository.deleteById(id);
     }
-    public boolean setSeat(Booking booking,String seat,List<Seat> seats){
+    public boolean setSeat(Booking booking,boolean isAdult,String seat,List<Seat> seats){
         for(Seat s: seats){
             if(s.getName().equals(seat)){
                 s.setAvailable(true);
-                booking.setPrice(booking.getPrice()+s.getPrice());
+                if(isAdult) {
+                    booking.setPrice(booking.getPrice() + s.getPrice());
+                }else{
+                    booking.setPrice(booking.getPrice() + s.getChildrenPrice());
+                }
                 return true;
             }
         }
         return false;
     }
-    public boolean setFood(Booking booking,List<String> food,List<Food> foods){
+    public boolean setFood(Booking booking,String food,List<Food> foods){
         if(food!=null) {
             for (Food f : foods) {
-                if (food.contains(f.getName()) && f.getQuantity() > 0) {
+                if (food.equals(f.getName()) && f.getQuantity() > 0) {
                     f.setQuantity(f.getQuantity() - 1);
                     booking.setPrice(booking.getPrice() + f.getPrice());
                     return true;
@@ -152,8 +158,9 @@ public class FlightService {
         p1.setEmail(p.getEmail());
         p1.setSex(p.getSex());
         p1.setBirthday(p.getBirthday());
-        p1.setFoods(p.getFoods());
+        p1.setFood(p.getFood());
         p1.setSeat(p.getSeat());
+        p1.setAdult(p.isAdult());
         return p1;
     }
     public boolean makeBookingRoundTrip(Booking booking, String flightId1,String flightId2,Person p){
@@ -169,18 +176,18 @@ public class FlightService {
         if(flight==null || flight2==null){
             return false;
         }
-        if(!setSeat(booking,p.getSeat(),flight.getSeats())){
+        if(!setSeat(booking,p.isAdult(),p.getSeat(),flight.getSeats())){
             return false;
         }
-        if(!setSeat(booking,p.getReturnSeat(),flight2.getSeats())){
+        if(!setSeat(booking,p.isAdult(),p.getReturnSeat(),flight2.getSeats())){
             return false;
         }
-        setFood(booking,p.getFoods(),flight.getFoods());
-        setFood(booking,p.getReturnFoods(),flight2.getFoods());
+        setFood(booking,p.getFood(),flight.getFoods());
+        setFood(booking,p.getReturnFood(),flight2.getFoods());
         flightRepository.save(flight);
         Passenger p1 = setPassenger(p);
         p1.setReturnSeat(p.getReturnSeat());
-        p1.setReturnFoods(p.getReturnFoods());
+        p1.setReturnFood(p.getReturnFood());
         booking.getPassengers().add(p1);
         return true;
     }
@@ -196,10 +203,10 @@ public class FlightService {
         if(flight==null){
             return false;
         }
-        if(!setSeat(booking,p.getSeat(),flight.getSeats())){
+        if(!setSeat(booking,p.isAdult(),p.getSeat(),flight.getSeats())){
             return false;
         }
-        setFood(booking,p.getFoods(),flight.getFoods());
+        setFood(booking,p.getFood(),flight.getFoods());
         flightRepository.save(flight);
         Passenger p1 = setPassenger(p);
         booking.getPassengers().add(p1);
@@ -244,12 +251,20 @@ public class FlightService {
         ticketInfo.setPassengers(booking.getPassengers());
         ticketInfo.setBookingId(booking.getId());
         ticketInfo.setPrice(booking.getPrice());
-        createAndSendTicket(ticketInfo);
+        createAndSendTicket(booking,ticketInfo);
         return booking;
 
     }
-    public void createAndSendTicket(TicketInfo ticketInfo) {
+    public void createAndSendTicket(Booking booking,TicketInfo ticketInfo) {
         byte[] pdfBytes = pdfService.generateTicketPdf(ticketInfo);
+        String outputPath = "tickets/"+ticketInfo.getBookingId()+".pdf"; // Percorso dove vuoi salvare il file PDF
+
+        try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+            fos.write(pdfBytes);
+            System.out.println("Il file PDF è stato salvato in: " + outputPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         emailService.sendTicketEmail(ticketInfo.getPassengers(), "Your Ticket id:"+ticketInfo.getBookingId(), "Here is your ticket", pdfBytes);
     }
 

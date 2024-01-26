@@ -6,24 +6,24 @@
           <th>Booking Date</th>
           <th>Passenger Name</th>
           <th>Passenger Email</th>
-          <th>Passenger Phone</th>
+          <th>Passenger Birthdate</th>
           <th>Seat Selection</th>
           <th>Flight Details</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let booking of bookings">
-          <td>{{ booking.bookingDate | date:'medium' }}</td>
-          <td>{{ booking.firstname }}</td>
-          <td>{{ booking.passengerEmail }}</td>
-          <td>{{ booking.passengerPhone }}</td>
-          <td>{{ booking.seatSelection }}</td>
+          <td>{{ booking.booking.date | date:'medium' }}</td>
+          <td>{{ booking.booking.passengers[0].firstname }}</td>
+          <td>{{ booking.booking.passengers[0].email  }}</td>
+          <td>{{ booking.booking.passengers[0].birthday  }}</td>
+          <td>{{ booking.booking.passengers[0].seat }}</td>
           <td>
-            Flight {{ booking.flight.id }}<br>
-            Origin: {{ booking.flight.origin }}<br>
-            Destination: {{ booking.flight.destination }}<br>
-            Date: {{ booking.flight.date | date:'medium' }}<br>
-            Price: {{ booking.flight.price | currency }}
+            Flight {{ booking.flightId1 }}<br>
+            Origin: {{ booking.departure}}<br>
+            Destination: {{ booking.arrival}}<br>
+            Date: {{ booking.date | date:'medium' }}<br>
+            Price: {{ booking.booking.price | currency }}
           </td>
         </tr>
       </tbody>

@@ -4,6 +4,7 @@ import { Flight, Flights } from '../flight.model';
 import { BookingService } from '../booking.service';
 import { CurrencyPipe } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { DataSharingService } from '../data-sharing.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -30,9 +31,11 @@ export class BookingFormComponent implements OnInit {
   n:number=0;
   currentPassengerIndex = 0;
   bookingService: BookingService;
+  dataSharingService:DataSharingService;
 
-  constructor(private route: ActivatedRoute, private router: Router, bookingService: BookingService) {
+  constructor(private route: ActivatedRoute, private router: Router, bookingService: BookingService, dataSharingService:DataSharingService) {
     this.bookingService = bookingService;
+    this.dataSharingService= dataSharingService;
   }
 
   ngOnInit() {
@@ -61,6 +64,12 @@ export class BookingFormComponent implements OnInit {
     });
   }
   addPassenger(){
+    if(this.isAdult==true){
+      this.numAdults--;
+    }
+    if(this.numAdults==0){
+      this.isAdult=false;
+    }
     if(this.isFormValid()){
         this.passengers.push({
           firstname:this.firstname,
@@ -68,11 +77,11 @@ export class BookingFormComponent implements OnInit {
           email: this.email,
           birthday: this.birthday,
           sex: this.sex,
-          foodSelection: this.foodSelection,
-          seatSelection: this.seatSelection,
-          returnFoodSelection : this.returnFoodSelection,
-          returnSeatSelection: this.returnSeatSelection,
-          isAdult:true
+          food: this.foodSelection,
+          seat: this.seatSelection,
+          returnFood : this.returnFoodSelection,
+          returnSeat: this.returnSeatSelection,
+          isAdult:this.isAdult
 
         });
         this.currentPassengerIndex++;
@@ -92,30 +101,23 @@ export class BookingFormComponent implements OnInit {
         email: this.email,
         birthday: this.birthday,
         sex: this.sex,
-        foodSelection: this.foodSelection,
-        seatSelection: this.seatSelection,
-        returnFoodSelection : this.returnFoodSelection,
-        returnSeatSelection: this.returnSeatSelection,
-        isAdult:true
+        food: this.foodSelection,
+        seat: this.seatSelection,
+        returnFood : this.returnFoodSelection,
+        returnSeat: this.returnSeatSelection,
+        isAdult:this.isAdult
 
       });
       console.log(this.passengers);
-      this.bookingService.bookFlight(
-        this.passengers,
-        this.selectedFlight!,
-        this.type
-      ).subscribe(booking =>{
-        console.log(booking);
-      });
-
-      /*this.router.navigate(['/view-ticket'], {
+      console.log(this.selectedFlight)
+      this.dataSharingService.updatePassengers(this.passengers);
+      this.router.navigate(['/view-ticket'], {
         queryParams: {
-          firstname: this.firstname,
-          lastname: this.lastname,
-          email: this.email,
-          seatSelection: this.seatSelection
+          passengers: JSON.stringify(this.passengers),
+          type: this.type,
+          selectedFlight: JSON.stringify(this.selectedFlight)
         }
-      });*/
+      });
     } else {
       alert('Please fill in all required fields.');
     }

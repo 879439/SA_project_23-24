@@ -22,12 +22,22 @@ public class Person {
     private String email;
     @NotNull
     private String seat;
+    @NotNull
+    private boolean isAdult;
     private String returnSeat;
-    private List<String> foods;
-    private List<String> returnFoods;
+    private String food;
+    private String returnFood;
 
     public String getFirstname() {
         return firstname;
+    }
+
+    public boolean isAdult() {
+        return isAdult;
+    }
+
+    public void setAdult(boolean adult) {
+        isAdult = adult;
     }
 
     public void setFirstname(String firstname) {
@@ -74,13 +84,7 @@ public class Person {
         this.seat = seat;
     }
 
-    public List<String> getFoods() {
-        return foods;
-    }
 
-    public void setFoods(List<String> foods) {
-        this.foods = foods;
-    }
 
     public String getReturnSeat() {
         return returnSeat;
@@ -90,11 +94,19 @@ public class Person {
         this.returnSeat = returnSeat;
     }
 
-    public List<String> getReturnFoods() {
-        return returnFoods;
+    public String getFood() {
+        return food;
     }
 
-    public void setReturnFoods(List<String> returnFoods) {
-        this.returnFoods = returnFoods;
+    public void setFood(String food) {
+        this.food = food;
+    }
+
+    public String getReturnFood() {
+        return returnFood;
+    }
+
+    public void setReturnFood(String returnFood) {
+        this.returnFood = returnFood;
     }
 }
