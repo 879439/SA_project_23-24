@@ -23,7 +23,7 @@ public class Person {
     @NotNull
     private String seat;
     @NotNull
-    private boolean isAdult;
+    private boolean isAdult = true;
     private String returnSeat;
     private String food;
     private String returnFood;

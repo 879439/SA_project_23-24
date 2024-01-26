@@ -84,6 +84,21 @@ export class BookingFormComponent implements OnInit {
           isAdult:this.isAdult
 
         });
+        this.selectedFlight.flight1.seats.forEach(seat=>{
+          if(seat.name===this.seatSelection){
+            seat.available=false;
+          }
+        })
+        this.selectedFlight.flight1.seats=this.selectedFlight.flight1.seats.filter(seat => seat.available===true);
+        if(this.selectedFlight.flight2){
+          
+          this.selectedFlight.flight2.seats.forEach(seat=>{
+            if(seat.name===this.returnSeatSelection){
+              seat.available=false;
+            }
+          })
+          this.selectedFlight.flight2.seats=this.selectedFlight.flight2.seats.filter(seat => seat.available===true);
+        }
         this.currentPassengerIndex++;
         console.log(this.passengers);
         this.resetForm();
@@ -95,22 +110,7 @@ export class BookingFormComponent implements OnInit {
   submitBookingForm() {
     console.log(this.passengers);
     if(this.isFormValid()) {
-      this.passengers.push({
-        firstname:this.firstname,
-        lastname:this.lastname,
-        email: this.email,
-        birthday: this.birthday,
-        sex: this.sex,
-        food: this.foodSelection,
-        seat: this.seatSelection,
-        returnFood : this.returnFoodSelection,
-        returnSeat: this.returnSeatSelection,
-        isAdult:this.isAdult
-
-      });
-      console.log(this.passengers);
-      console.log(this.selectedFlight)
-      this.dataSharingService.updatePassengers(this.passengers);
+      this.addPassenger();
       this.router.navigate(['/view-ticket'], {
         queryParams: {
           passengers: JSON.stringify(this.passengers),

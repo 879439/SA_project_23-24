@@ -21,7 +21,7 @@ export interface Flight {
  
   export interface Seat{
     name:string;
-    isAvailable:boolean;
+    available:boolean;
     price:number;
     childrenPrice:number;
   }

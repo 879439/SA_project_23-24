@@ -123,12 +123,14 @@ public class FlightService {
     }
 
     public void deleteFlight(String id) {
+        List<Booking> bookings = bookingRepository.findByFlightIds(id);
+        bookingRepository.deleteAll(bookings);
         flightRepository.deleteById(id);
     }
     public boolean setSeat(Booking booking,boolean isAdult,String seat,List<Seat> seats){
         for(Seat s: seats){
             if(s.getName().equals(seat)){
-                s.setAvailable(true);
+                s.setAvailable(false);
                 if(isAdult) {
                     booking.setPrice(booking.getPrice() + s.getPrice());
                 }else{
@@ -185,6 +187,7 @@ public class FlightService {
         setFood(booking,p.getFood(),flight.getFoods());
         setFood(booking,p.getReturnFood(),flight2.getFoods());
         flightRepository.save(flight);
+        flightRepository.save(flight2);
         Passenger p1 = setPassenger(p);
         p1.setReturnSeat(p.getReturnSeat());
         p1.setReturnFood(p.getReturnFood());

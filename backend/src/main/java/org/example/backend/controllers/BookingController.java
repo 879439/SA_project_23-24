@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -35,6 +32,29 @@ public class BookingController {
     public BookingController(FlightService flightService, BookingService bookingService) {
         this.flightService = flightService;
         this.bookingService = bookingService;
+    }
+    @GetMapping("/{{bookingId}}")
+    public ResponseEntity<?> getBooking(@PathVariable String bookingId){
+        Optional<Booking> booking = bookingService.getBookingById(bookingId);
+        List<BookingResponse> newBookings = new ArrayList<>();
+        if(booking.isPresent()){
+            Booking b= booking.get();
+            if(b.getFlightId1()!=null) {
+                Flight flight = flightService.getFlightById(b.getFlightId1());
+                if(flight!=null) {
+                    BookingResponse newBooking = new BookingResponse(b, flight.getDeparture(), flight.getArrival(), flight.getDate(), flight.getDeparture_time(), flight.getTravelClass());
+                    newBookings.add(newBooking);
+                }
+            }
+            if(b.getFlightId2()!=null) {
+                Flight flight2 = flightService.getFlightById(b.getFlightId2());
+                if(flight2!=null) {
+                    BookingResponse newBooking = new BookingResponse(b, flight2.getDeparture(), flight2.getArrival(), flight2.getDate(), flight2.getDeparture_time(), flight2.getTravelClass());
+                    newBookings.add(newBooking);
+                }
+            }
+        }
+        return ResponseEntity.ok(newBookings);
     }
     @GetMapping("/myBookings")
     public ResponseEntity<?> getMyBookings(){
