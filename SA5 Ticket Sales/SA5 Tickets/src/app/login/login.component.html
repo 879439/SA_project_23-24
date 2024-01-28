@@ -3,8 +3,8 @@
     <h2 >Login</h2>
     
     <form (ngSubmit)="login()" #loginForm="ngForm">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" [(ngModel)]="loginEmail" required>
+      <label for="email">Username:</label>
+      <input type="text" id="email" name="username" [(ngModel)]="loginUsername" required>
   
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" [(ngModel)]="loginPassword" required>
@@ -23,13 +23,24 @@
   
       <label for="surname">Surname:</label>
       <input type="text" id="surname" name="surname" [(ngModel)]="registerSurname" required>
+      <label for="surname">Username:</label>
+      <input type="text" id="surname" name="surname" [(ngModel)]="registerUsername" required>
   
       <label for="dob">Date of Birth:</label>
       <input type="date" id="dob" name="dob" [(ngModel)]="registerDOB" required>
   
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" [(ngModel)]="registerEmail" required>
-  
+      <div class="form-group">
+        <label for="seatSelection">Sex:</label>
+        <select class="form-control" id="sex" name="sex" [(ngModel)]="registerSex" required>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+        </select>
+      </div>
+      <label for="password">Password:</label>
+      <input type="password" id="email" name="email" [(ngModel)]="registerPassword" required>
+
       <label>
         <input type="checkbox" [(ngModel)]="agreeToTerms" required>
         I agree to the terms and conditions

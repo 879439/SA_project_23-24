@@ -1,6 +1,8 @@
 package org.example.backend.requests;
 
 import org.example.backend.Annotations.ValidDate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -23,7 +25,7 @@ public class Person {
     @NotNull
     private String seat;
     @NotNull
-    private boolean isAdult = true;
+    private Boolean isAdult;
     private String returnSeat;
     private String food;
     private String returnFood;
@@ -32,12 +34,12 @@ public class Person {
         return firstname;
     }
 
-    public boolean isAdult() {
+    public Boolean isAdult() {
         return isAdult;
     }
 
-    public void setAdult(boolean adult) {
-        isAdult = adult;
+    public void setAdult(Boolean isAdult) {
+        this.isAdult = isAdult;
     }
 
     public void setFirstname(String firstname) {

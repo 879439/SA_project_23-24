@@ -18,7 +18,7 @@ public class CustomExceptionHandler {
         List<String> details = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(error -> error.getDefaultMessage())
+                .map(error ->error.getField()+": "+ error.getDefaultMessage())
                 .collect(Collectors.toList());
 
         ErrorResponse error = new ErrorResponse("Validation Failed", details);

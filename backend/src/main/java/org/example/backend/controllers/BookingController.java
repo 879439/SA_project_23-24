@@ -107,7 +107,7 @@ public class BookingController {
 
     @PostMapping("/flight")
     public ResponseEntity<?> bookFlight(@Valid @RequestBody BookFlight bookFlight) {
-        Booking booking = flightService.bookFlight(bookFlight);
+        Booking booking = bookingService.bookFlight(bookFlight);
         if(booking==null){
             return ResponseEntity.badRequest().body(new MessageResponse("Seat not available or flight not existing!"));
         }else{

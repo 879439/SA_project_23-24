@@ -21,7 +21,28 @@ public class FlightRequestSender {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
-        String url = "http://localhost:8080/api/flights";
+        String json2 = String.format("""
+                    {
+                        "username": "admin",
+                        "password": "admin",
+                        "email": "admin@admin.it",
+                        "role": "admin",
+                        "firstname": "admin",
+                        "lastname": "admin",
+                        "sex" : "M",
+                        "birthdate": "2000-01-01"
+                    }""");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/auth/signup"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json2))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Response: " + response.body());
+        String url = "http://localhost:8081/api/flights";
 
         for (int i = 0; i < 200; i++) {
             String departureCity = cities[random.nextInt(cities.length)];
@@ -55,16 +76,16 @@ public class FlightRequestSender {
                     }""",
                     company, departureCity, arrivalCity, date, departureTime, arrivalTime, food, random.nextInt(10) + 1, random.nextDouble() * 50, size, discountCode,travelClass);
 
-            HttpRequest request = HttpRequest.newBuilder()
+            HttpRequest request2 = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
 
-            System.out.println("Status Code: " + response.statusCode());
-            System.out.println("Response: " + response.body());
+            System.out.println("Status Code: " + response2.statusCode());
+            System.out.println("Response: " + response2.body());
         }
     }
 
