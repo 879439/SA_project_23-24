@@ -1,0 +1,75 @@
+/* ul li a {
+    font-size: 17px;
+    font-weight: 600;
+    color: green;
+}
+ul li a:hover{
+     color: skyblue;
+} */
+.btn-primary{
+  background-color: rgb(72, 72, 72);
+  border: none;
+
+}
+.btn-primary:hover{
+  background-color: rgb(37, 37, 37);
+  border: none;
+}
+.Fly8{
+    color: aliceblue;
+}
+.Fly8:hover{
+    color: skyblue;
+}
+body {
+    background-image: url('/assets/background.png');
+    background-size: cover; /* This ensures the image covers the entire body */
+    /* background-repeat: no-repeat; Prevent the image from repeating */
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  html, body {
+    height: 100%;
+    display: flex;
+    
+  }
+  .book{
+    font-size: 17px;
+    font-weight: 600;
+    color: aliceblue;
+  }
+  .book:hover{
+    color: skyblue;
+  }
+  .lkm{
+    width: 100%;
+    margin-top: 40px;
+  }
+  .navbar-toggler{
+    background-color: aliceblue;
+  }
+  .container-fluid{
+    background-color: white;
+    width: 100%;
+   
+  };
+  .nav-item{
+    margin:  0;
+    align-items: center;
+    display: flex;
+    background-color: teal;
+    justify-content: center;
+    height: 3vh;
+    padding: 5px, 10px;
+    border: 1px solid white;
+    
+    
+    
+  };
+  .navbar img{
+    height: 200%;
+    width: 25%;
+  };
+ 
+ 
+   
