@@ -67,9 +67,7 @@ export class BookingFormComponent implements OnInit {
     if(this.isAdult==true){
       this.numAdults--;
     }
-    if(this.numAdults==0){
-      this.isAdult=false;
-    }
+  
     if(this.isFormValid()){
         this.passengers.push({
           firstname:this.firstname,
@@ -81,7 +79,7 @@ export class BookingFormComponent implements OnInit {
           seat: this.seatSelection,
           returnFood : this.returnFoodSelection,
           returnSeat: this.returnSeatSelection,
-          isAdult:this.isAdult
+          adult:this.isAdult
 
         });
         this.selectedFlight.flight1.seats.forEach(seat=>{
@@ -105,13 +103,16 @@ export class BookingFormComponent implements OnInit {
     }else{
       alert('Please fill in all required fields.');
     }
+    if(this.numAdults==0){
+      this.isAdult=false;
+    }
     
   }
   submitBookingForm() {
     console.log(this.passengers);
     if(this.isFormValid()) {
       this.addPassenger();
-      this.router.navigate(['/view-ticket'], {
+      this.router.navigate(['/download-ticket'], {
         queryParams: {
           passengers: JSON.stringify(this.passengers),
           type: this.type,

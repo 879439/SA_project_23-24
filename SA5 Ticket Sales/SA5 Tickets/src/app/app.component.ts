@@ -9,4 +9,13 @@ import {  ViewEncapsulation } from '@angular/core';
 })
 export class AppComponent {
   title = 'fly8-buddy';
+
+  get isLoggedIn(): boolean {
+    const user = JSON.parse(sessionStorage.getItem('user')+"");
+    return (user !== null) ? true : false;
+  }
+
+  logout(){
+    sessionStorage.removeItem('user');
+  }
 }

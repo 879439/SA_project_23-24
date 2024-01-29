@@ -12,7 +12,7 @@ import { FlightService } from './flight.service';
 export class BookingService {
   private bookings: any[] = [];
   private apiUrl = "http://localhost:8080/api/bookings";
-  headers = new HttpHeaders().set("Authorization", "Bearer"+" eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnYXR0byIsImlhdCI6MTcwNjI3MjkwMCwiZXhwIjoxNzA2NDQ1NzAwfQ.xAw3QEEaQ-fY2xPm9pUiNsheauV3GqEh1U-DlJKEIYI");
+  
   constructor(private http:HttpClient, private flightService:FlightService) { }
 
   bookFlight(passengers:any[],flight: any,type:string):Observable<any> {
@@ -25,8 +25,10 @@ export class BookingService {
       type:type,
       date: new Date(),
     };
-    this.bookings.push(booking);
-    return this.http.post(this.apiUrl+"/flight",booking).pipe(tap((bookings: any) => {
+    sessionStorage.setItem("booking",JSON.stringify(booking));
+    console.log(sessionStorage.getItem("jwt"))
+    const headers = new HttpHeaders().set("Authorization", "Bearer "+sessionStorage.getItem("jwt") );
+    return this.http.post(this.apiUrl+"/flight",booking,{headers: headers}).pipe(tap((bookings: any) => {
       console.log('fetched booking');
       
     }),
@@ -48,9 +50,18 @@ export class BookingService {
     };
   }
   getMyBookings(){
-    return this.http.get(this.apiUrl+"/myBookings",{headers:this.headers}).pipe(tap((bookings: any) => {
+    const headers = new HttpHeaders().set("Authorization", "Bearer "+sessionStorage.getItem("jwt") );
+    return this.http.get(this.apiUrl+"/myBookings",{headers:headers}).pipe(tap((bookings: any) => {
       console.log('fetched booking');
       console.log(bookings);
+      
+    }),
+    catchError(this.handleError('getMyBooking', [])));
+  }
+  getByBookingId(id:string){
+    return this.http.get(this.apiUrl+"/"+id).pipe(tap((booking: any) => {
+      console.log('fetched booking');
+      console.log(booking);
       
     }),
     catchError(this.handleError('getMyBooking', [])));

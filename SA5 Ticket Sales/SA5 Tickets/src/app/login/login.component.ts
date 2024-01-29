@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent {
   registerDOB: string = '';
   registerEmail: string = '';
   agreeToTerms: boolean = false;
-  constructor(private userService:UserService,private snackBar:MatSnackBar){}
+  constructor(private userService:UserService,private snackBar:MatSnackBar,private router:Router){}
   // Login Function
   login() {
     // Implement your login logic here
@@ -31,8 +32,8 @@ export class LoginComponent {
       next: (response) => {
         const jwt = response.headers.get('Authorization');
         if (jwt) {
-          localStorage.setItem('JWT', jwt.replace('Bearer ', ''));
-          localStorage.setItem("user",JSON.stringify(response.body));
+          sessionStorage.setItem('jwt', jwt.replace('Bearer ', ''));
+          sessionStorage.setItem("user",JSON.stringify(response.body));
 
         }
       },
@@ -52,6 +53,7 @@ export class LoginComponent {
       }
     });
     console.log('Login with:', this.loginUsername, this.loginPassword);
+    this.router.navigate(['/']);
   }
 
   // Registration Function

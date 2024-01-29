@@ -9,6 +9,7 @@ import { DownloadTicketComponent } from './download-ticket/download-ticket.compo
 import { BookingFormComponent } from './booking-form/booking-form.component';
 import { MyBookingComponent } from './my-booking/my-booking.component';
 import { LoginComponent } from './login/login.component';
+import { BookingDetailsComponent } from './booking-details/booking-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'customer-details', component: CustomerDetailsComponent },
   { path: 'view-ticket', component: ViewTicketComponent },
   { path: 'download-ticket', component: DownloadTicketComponent },
+  { path: 'booking-details',component:BookingDetailsComponent},
   { path: 'booking-form', component: BookingFormComponent },
   { path: 'my-booking', component: MyBookingComponent },
   {path: 'login', component: LoginComponent}
