@@ -17,6 +17,10 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
+# Build the whole project
+Run 'docker-compose up --build' in of the two folders.
+Once build, inside both the projects there is a script that create the admin user (username: admin passowrd: adminadmin) and insert inside the databse 200 flights.
+
 # Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
