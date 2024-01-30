@@ -18,8 +18,9 @@ Run `ng generate component component-name` to generate a new component. You can 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 # Build the whole project
-Run 'docker-compose up --build' in of the two folders.
-Once build, inside both the projects there is a script that create the admin user (username: admin passowrd: adminadmin) and insert inside the databse 200 flights.
+Run 'Docker-compose up --build' in two folders.
+Once built, inside both projects there is a script that creates the admin user (username: admin passowrd: adminadmin) and inserts within the database 200 flights.
+Before executing the command, please compile each backend(s) with IntelliJIDEA.
 
 # Running end-to-end tests
 
