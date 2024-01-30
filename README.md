@@ -20,7 +20,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 # Build the whole project
 Run 'Docker-compose up --build' in two folders.
 Once built, inside both projects there is a script that creates the admin user (username: admin passowrd: adminadmin) and inserts within the database 200 flights.
-Before executing the command, please compile each backend(s) with IntelliJIDEA.
+(don't need)Before executing the command, please compile each backend(s) with IntelliJIDEA.
 
 # Running end-to-end tests
 
