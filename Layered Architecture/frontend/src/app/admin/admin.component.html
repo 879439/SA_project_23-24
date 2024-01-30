@@ -1,0 +1,98 @@
+<div class="container mt-4">
+    <h2>Flight Form</h2>
+    <form (submit)="insertFlight()">
+        <!-- Company -->
+        <div class="form-group">
+            <label for="company">Company</label>
+            <select class="form-control" id="company" [(ngModel)]="company" name="company">
+                <option>AlItalia</option>
+                <option>EasyJet</option>
+                <option>RyanAir</option>
+                <!-- Add other companies here -->
+            </select>
+        </div>
+
+        <!-- Departure City -->
+        <div class="form-group">
+            <label for="departure">Departure City</label>
+            <select class="form-control" id="departure" [(ngModel)]="departure"  name="departure">
+                <option>Rome</option>
+                <option>Milan</option>
+                <option>Venice</option>
+                <option>Florence</option>
+                <option>Turin</option>
+                <option>Naples</option>
+                <!-- Add other Italian cities here -->
+            </select>
+        </div>
+
+        <!-- Arrival City -->
+        <div class="form-group">
+            <label for="arrival">Arrival City</label>
+            <select class="form-control" id="arrival" [(ngModel)]="arrival" name="arrival" >
+                <option>Rome</option>
+                <option>Milan</option>
+                <option>Venice</option>
+                <option>Florence</option>
+                <option>Turin</option>
+                <option>Naples</option>
+                <!-- Add other Italian cities here -->
+            </select>
+        </div>
+
+        <!-- Date -->
+        <div class="form-group" >
+            <label for="date">Date</label>
+            <input type="date" class="form-control" id="date" [(ngModel)]="date"  name="date">
+        </div>
+
+        <!-- Departure Time -->
+        <div class="form-group">
+            <label for="departureTime">Departure Time</label>
+            <input type="time" class="form-control" id="departureTime" [(ngModel)]="departure_time"  name="departure_time">
+        </div>
+
+        <!-- Arrival Time -->
+        <div class="form-group">
+            <label for="arrivalTime">Arrival Time</label>
+            <input type="time" class="form-control" id="arrivalTime" [(ngModel)]="arrival_time"  name="arrival_time">
+        </div>
+
+        <!-- Travel Class -->
+        <div class="form-group">
+            <label for="travelClass">Travel Class</label>
+            <select class="form-control" id="travelClass" [(ngModel)]="travelClass"  name="travelClass">
+                <option value="economy">Economy</option>
+                <option value="business">Business</option>
+                <option value="firstClass">First Class</option>
+            </select>
+        </div>
+
+        <!-- Foods (Simple Example) -->
+        <div class="form-group">
+            <label>Foods</label>
+            <input type="text" class="form-control mb-2" placeholder="Food Name" [(ngModel)]="name"  name="name">
+            <input type="number" class="form-control mb-2" placeholder="Quantity" [(ngModel)]="quantity"  name="quantity">
+            <input type="number" class="form-control mb-2" placeholder="Price" [(ngModel)]="price"  name="price">
+            <!-- In a real application, you would use JavaScript to dynamically add more fields -->
+        </div>
+
+        <!-- Luggage Size -->
+        <div class="form-group">
+            <label for="size">Luggage Size</label>
+            <select class="form-control" id="size" [(ngModel)]="size"  name="size">
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="big">Big</option>
+            </select>
+        </div>
+
+        <!-- Discount Code -->
+        <div class="form-group">
+            <label for="discountCode">Discount Code</label>
+            <input type="text" class="form-control" id="discountCode" placeholder="Enter code" [(ngModel)]="discountCode"  name="discountCode">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

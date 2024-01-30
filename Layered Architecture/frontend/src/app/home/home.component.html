@@ -1,0 +1,8 @@
+<ng-container *ngIf="isAdmin==false">
+    <app-search-flight></app-search-flight>
+  </ng-container>
+  <ng-container *ngIf="isAdmin==true">
+    <app-admin></app-admin>
+  </ng-container>
+  
+  <router-outlet></router-outlet>

@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: frontend
+    ports:
+      - "4200:4200"
+
+  userservice:
+    container_name: userservice
+    build:
+      context: UserService
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+
+  flightservice:
+    container_name: flightservice
+    build:
+      context: FlightService
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+
+  bookingservice:
+    container_name: bookingservice
+    build:
+      context: BookingService
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+
+  pdfservice:
+    container_name: pdfservice
+    build:
+      context: PdfService
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mongodb
+
+  emailservice:
+    container_name: emailservice
+    build:
+      context: EmailService
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mongodb
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    volumes:
+      - sa_mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    command: ["mongod", "--bind_ip_all"]
+  db-init:
+    container_name: db-init
+    build:
+      context: script
+    depends_on:
+      - mongodb
+      - userservice
+      - flightservice
+
+volumes:
+  sa_mongo_data:

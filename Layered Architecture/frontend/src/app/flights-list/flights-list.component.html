@@ -1,0 +1,18 @@
+<div class="container mt-3">
+    <h2>Search Results</h2>
+    <div *ngIf="flights.length > 0; else noResults">
+      <div class="card mb-3  flight-card" *ngFor="let flight of flights">
+        <div class="card-body">
+          <h5 class="card-title">Flight {{ flight.id }}</h5>
+          <p class="card-text">Origin: {{ flight.departure }}</p>
+          <p class="card-text">Destination: {{ flight.arrival }}</p>
+          <p class="card-text">Date: {{ flight.date }}</p>
+          <p class="card-text">Price: {{ flight.price | currency }}</p>
+          <button class="btn btn-primary" (click)="deleteFlight(flight.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noResults>
+      <p>No flights found</p>
+    </ng-template>
+  </div>

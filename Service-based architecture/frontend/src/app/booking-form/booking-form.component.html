@@ -1,0 +1,86 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <!-- Flight Data Box -->
+    <div class="col-md-6">
+      <div class="flight-box card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Selected Flight: Flight {{ selectedFlight.flight1.id }}</h5>
+          <p class="card-text">Origin: {{ selectedFlight.flight1.departure }}</p>
+          <p class="card-text">Destination: {{ selectedFlight.flight1.arrival }}</p>
+          <p class="card-text">Date: {{ selectedFlight.flight1.date }}</p>
+          <p class="card-text" *ngIf="type=='round-trip'">Return date: {{ selectedFlight.flight2.date }}</p>
+          <p class="card-text">Price: {{ selectedFlight.price || selectedFlight.flight1.price }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Booking Form Box -->
+    <div class="col-md-6">
+      <div class="booking-box card mb-3">
+        <div class="card-body">
+          <h2 class="card-title">Booking Form</h2>
+          <form (submit)="submitBookingForm()">
+            
+              <h3>Passenger {{currentPassengerIndex+1}}</h3> <h4 *ngIf="isAdult==true">Adult</h4><h4 *ngIf="isAdult!=true">Child</h4>
+            <div class="form-group">
+              <label for="passengerName">FirstName:</label>
+              <input type="text" class="form-control" id="passengerName" name="passengerName" [(ngModel)]="firstname" required>
+            </div>
+            <div class="form-group">
+              <label for="passengerName">lastname:</label>
+              <input type="text" class="form-control" id="passengerName" name="passengerName" [(ngModel)]="lastname" required>
+            </div>
+            <div class="form-group">
+              <label for="passengerEmail">Email:</label>
+              <input type="email" class="form-control" id="passengerEmail" name="passengerEmail" [(ngModel)]="email" required>
+            </div>
+            <div class="form-group">
+              <label for="passengerPhone">Birthdate:</label>
+              <input type="date" class="form-control" id="birthday" name="birthday" [(ngModel)]="birthday" required>
+            </div>
+            <div class="form-group">
+              <label for="seatSelection">Sex:</label>
+              <select class="form-control" id="sex" name="sex" [(ngModel)]="sex" required>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="seatSelection">Seat Selection:</label>
+              <select class="form-control" id="seatSelection" name="seatSelection" [(ngModel)]="seatSelection" required>
+                      <option *ngFor="let seat of selectedFlight.flight1.seats" [value]="seat.name">{{seat.name}}</option>
+                  
+              </select>
+            </div>
+            <div *ngIf="type=='round-trip'" class="form-group">
+              <label for="seatSelection">Return Seat Selection:</label>
+              <select class="form-control" id="seatSelection" name="seatSelection" [(ngModel)]="returnSeatSelection" required>
+                      <option *ngFor="let seat of selectedFlight.flight2.seats" [value]="seat.name">{{seat.name}}</option>
+                  
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="seatSelection">Food Selection:</label>
+              <select class="form-control" id="seatSelection" name="foodSelection" [(ngModel)]="foodSelection" required>
+                      <option *ngFor="let food of selectedFlight.flight1.foods" [value]="food.name">{{food.name}}</option>
+              </select>
+            </div>
+            <div *ngIf="type=='round-trip'" class="form-group">
+              <label for="seatSelection">Food Selection:</label>
+              <select class="form-control" id="seatSelection" name="foodSelection" [(ngModel)]="returnFoodSelection" required>
+                      <option *ngFor="let food of selectedFlight.flight2.foods" [value]="food.name">{{food.name}}</option>
+              </select>
+            </div>
+            <button *ngIf="currentPassengerIndex==n-1" type="submit" class="btn btn-primary">Confirm Booking</button>
+            <button *ngIf="currentPassengerIndex!=n-1" type="button" (click)="addPassenger()" class="btn btn-primary">AddPassenger</button>
+            <button type="button" class="btn btn-secondary">Reset</button>
+             
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #noFlightSelected>
+  <p>No flight selected for booking. Please go back to search results and select a flight.</p>
+</ng-template>
